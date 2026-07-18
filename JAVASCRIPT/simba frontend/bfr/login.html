@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | FreshMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 flex items-center justify-center min-h-screen">
+
+    <div class="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-slate-700">
+        <h2 class="text-3xl font-bold text-white text-center mb-8">Admin Login</h2>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                <input type="email" id="email" required
+                    class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                    placeholder="admin@gmail.com">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                <input type="password" id="password" required
+                    class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                    placeholder="••••••••">
+            </div>
+
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg transform transition-transform active:scale-95">
+                Login to Dashboard
+            </button>
+            <div class="mt-6 border-t border-slate-700 pt-6">
+                <a href="index.html"
+                    class="flex items-center justify-center text-slate-500 hover:text-white text-sm transition">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Not an Admin? Back to Storefront
+                </a>
+            </div>
+        </form>
+
+        <p id="message" class="mt-4 text-center text-sm font-semibold"></p>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const messageBox = document.getElementById('message');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Targeting the port 5000 as defined in your index.js
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageBox.className = "mt-4 text-center text-green-400";
+                    messageBox.innerText = "Login Successful! Redirecting...";
+
+                    // Store the JWT token for Requirement #5 (Authentication)
+                    localStorage.setItem('adminToken', data.token);
+
+                    // Redirect to your product management page after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    messageBox.className = "mt-4 text-center text-red-400";
+                    messageBox.innerText = data.message || "Login Failed";
+                }
+            } catch (error) {
+                console.error("Connection Error:", error);
+                messageBox.className = "mt-4 text-center text-yellow-400";
+                messageBox.innerText = "Cannot reach the server. Make sure backend is running on port 5000.";
+            }
+        });
+    </script>
+</body>
+
+</html>

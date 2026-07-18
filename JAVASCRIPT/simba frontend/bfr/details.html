@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - FreshMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 font-sans text-gray-900">
+
+    <nav class="bg-blue-700 text-white shadow-lg p-4 mb-8">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold cursor-pointer" onclick="window.location.href='index.html'">🛒 FreshMart</h1>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4">
+        <div id="detailsContainer"
+            class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <div class="p-20 text-center text-gray-400">Loading product details...</div>
+        </div>
+
+        <div class="text-center mt-8 pb-10">
+            <button onclick="window.location.href='index.html'" class="text-blue-700 font-bold hover:underline">← Back
+                to Inventory</button>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = "http://localhost:5000/api/products";
+
+        async function loadProductDetails() {
+            // 1. Get the ID from the URL (?id=123...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (!productId) {
+                document.getElementById('detailsContainer').innerHTML = "<p class='p-10 text-red-500'>Error: No Product ID found.</p>";
+                return;
+            }
+
+            try {
+                // 2. Fetch specific product from backend
+                const res = await fetch(`${API_URL}/${productId}`);
+                const product = await res.json();
+
+                if (!res.ok) throw new Error(product.message);
+
+                // 3. Render the details
+                renderDetails(product);
+            } catch (err) {
+                document.getElementById('detailsContainer').innerHTML = `<p class='p-10 text-red-500'>Error: ${err.message}</p>`;
+            }
+        }
+
+        function renderDetails(p) {
+            const container = document.getElementById('detailsContainer');
+            container.innerHTML = `
+                <div class="md:flex">
+                    <div class="md:w-1/2">
+                        <img src="${p.image}" class="h-96 w-full object-cover" alt="${p.name}">
+                    </div>
+                    <div class="md:w-1/2 p-8 flex flex-col justify-center">
+                        <span class="text-blue-600 font-semibold uppercase tracking-wide text-sm">Product Details</span>
+                        <h2 class="text-3xl font-extrabold mt-2 mb-4">${p.name}</h2>
+                        
+                        <div class="space-y-4 mb-8">
+                            <p class="text-4xl font-black text-blue-700">${p.price.toLocaleString()} RWF</p>
+                            <p class="text-gray-600">
+                                <span class="font-bold">Current Stock:</span> 
+                                <span class="${p.stock > 0 ? 'text-green-600' : 'text-red-600'}">${p.stock} units</span>
+                            </p>
+                        </div>
+
+                        <button onclick="alert('Order feature coming soon!')" 
+                                class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition shadow-lg">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.onload = loadProductDetails;
+    </script>
+</body>
+
+</html>

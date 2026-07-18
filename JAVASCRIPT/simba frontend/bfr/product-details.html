@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | FreshMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-4xl w-full bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+        <div class="md:flex">
+            <div class="md:w-1/2">
+                <img id="productImage" src="https://via.placeholder.com/400" alt="Product"
+                    class="w-full h-full object-cover">
+            </div>
+
+            <div class="p-8 md:w-1/2 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h1 id="productName" class="text-3xl font-bold">Loading...</h1>
+                        <span id="productCategory"
+                            class="bg-blue-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Category</span>
+                    </div>
+
+                    <p id="productPrice" class="text-2xl text-green-400 font-semibold mb-4">$0.00</p>
+                    <p id="productDescription" class="text-slate-400 leading-relaxed mb-6">
+                        Fetching the best product details for you...
+                    </p>
+
+                    <div class="border-t border-slate-700 pt-4">
+                        <p class="text-sm text-slate-500">Stock Available: <span id="productStock"
+                                class="text-white">0</span></p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col gap-3">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 font-bold py-3 rounded-lg transition">
+                        Add to Cart
+                    </button>
+                    <button onclick="history.back()"
+                        class="w-full bg-slate-700 hover:bg-slate-600 text-center font-semibold py-3 rounded-lg border border-slate-600 transition">
+                        ← Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+
+        async function getDetails() {
+            if (!productId) {
+                alert("No product selected!");
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            try {
+                // Fetching from your productController.js endpoint
+                const response = await fetch(`http://localhost:5000/api/products/${productId}`);
+                const product = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('productName').innerText = product.name;
+                    document.getElementById('productPrice').innerText = `$${product.price}`;
+                    document.getElementById('productCategory').innerText = product.category;
+                    document.getElementById('productDescription').innerText = product.description || "No description provided.";
+                    document.getElementById('productStock').innerText = product.stock;
+                    document.getElementById('productImage').src = product.image;
+                } else {
+                    alert("Product not found");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        getDetails();
+    </script>
+</body>
+
+</html>

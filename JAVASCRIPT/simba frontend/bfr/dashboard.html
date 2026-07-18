@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | FreshMart Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 text-white min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8 bg-slate-800 p-6 rounded-xl border border-slate-700">
+            <h1 class="text-2xl font-bold">Inventory Management</h1>
+            <button onclick="logout()"
+                class="text-sm bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition">Logout</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 h-fit">
+                <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
+                <form id="productForm" class="space-y-4">
+                    <input type="text" id="name" placeholder="Product Name" required
+                        class="w-full bg-slate-700 border-slate-600 rounded-lg p-2 text-white">
+                    <input type="number" id="price" placeholder="Price" required
+                        class="w-full bg-slate-700 border-slate-600 rounded-lg p-2 text-white">
+                    <input type="text" id="category" placeholder="Category" required
+                        class="w-full bg-slate-700 border-slate-600 rounded-lg p-2 text-white">
+                    <input type="number" id="stock" placeholder="Initial Stock"
+                        class="w-full bg-slate-700 border-slate-600 rounded-lg p-2 text-white">
+                    <textarea id="description" placeholder="Product Description"
+                        class="w-full bg-slate-700 border-slate-600 rounded-lg p-2 text-white"></textarea>
+
+                    <label class="block text-sm font-medium text-slate-400">Product Image (Cloudinary Upload)</label>
+                    <input type="file" id="image" accept="image/*" required
+                        class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+
+                    <button type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 font-bold py-3 rounded-lg mt-4 transition">Save
+                        Product</button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 space-y-4">
+                <div id="productList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
+
+                <div id="pagination" class="flex justify-center gap-2 mt-6"></div>
+            </div>
+        </div>
+    </div>
+    // Update your renderProducts function line
+    <a href="product-details.html?id=${p._id}">
+        <img src="${p.image}" class="h-40 w-full object-cover rounded-lg mb-4 hover:opacity-80 transition">
+    </a>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/products';
+        const token = localStorage.getItem('adminToken');
+
+        // Redirect if not logged in (Requirement #5)
+        if (!token) window.location.href = 'login.html';
+
+        async function fetchProducts(page = 1) {
+            try {
+                const res = await fetch(`${API_URL}?page=${page}&limit=4`);
+                const data = await res.json();
+                renderProducts(data.products);
+                renderPagination(data.totalPages, data.currentPage);
+            } catch (err) { console.error("Error fetching products", err); }
+        }
+
+        function renderProducts(products) {
+            const list = document.getElementById('productList');
+            list.innerHTML = products.map(p => `
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col">
+                    <img src="${p.image}" class="h-40 w-full object-cover rounded-lg mb-4">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg">${p.name}</h3>
+                        <p class="text-blue-400 font-bold">$${p.price}</p>
+                        <p class="text-slate-400 text-sm">Category: ${p.category}</p>
+                    </div>
+                    <button onclick="deleteProduct('${p._id}')" class="mt-4 text-red-400 hover:text-red-300 text-sm font-semibold">Delete Product</button>
+                </div>
+            `).join('');
+        }
+
+        // Handle Add Product (Multipart/Form-Data for Cloudinary)
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('price', document.getElementById('price').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('stock', document.getElementById('stock').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('image', document.getElementById('image').files[0]);
+
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+
+            if (res.ok) {
+                alert('Product uploaded to Cloudinary successfully!');
+                fetchProducts();
+                e.target.reset();
+            } else {
+                alert('Upload failed. Check if you are Admin.');
+            }
+        });
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure? This will delete the image from Cloudinary too.')) return;
+
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) { fetchProducts(); }
+        }
+
+        function renderPagination(total, current) {
+            const nav = document.getElementById('pagination');
+            nav.innerHTML = Array.from({ length: total }, (_, i) => `
+                <button onclick="fetchProducts(${i + 1})" 
+                    class="px-4 py-2 rounded-lg ${current === i + 1 ? 'bg-blue-600' : 'bg-slate-700 hover:bg-slate-600'}">
+                    ${i + 1}
+                </button>
+            `).join('');
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = 'login.html';
+        }
+
+        fetchProducts(); // Initial load
+    </script>
+    <div class="mt-12 bg-slate-800 p-6 rounded-xl border border-slate-700">
+        <h2 class="text-xl font-semibold mb-4 text-blue-400">Manage Registered Users</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="text-slate-400 border-b border-slate-700">
+                    <tr>
+                        <th class="py-3 px-4">Name</th>
+                        <th class="py-3 px-4">Email</th>
+                        <th class="py-3 px-4">Role</th>
+                        <th class="py-3 px-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Add this to your existing <script> in dashboard.html
+        async function fetchUsers() {
+            const res = await fetch('http://localhost:5000/api/users', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const users = await res.json();
+            const tbody = document.getElementById('userTableBody');
+
+            tbody.innerHTML = users.map(user => `
+            <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                <td class="py-4 px-4 font-medium">${user.name} ${user._id === reqUserId ? '(You)' : ''}</td>
+                <td class="py-4 px-4 text-slate-400">${user.email}</td>
+                <td class="py-4 px-4">
+                    <span class="${user.isAdmin ? 'text-green-400' : 'text-slate-400'}">
+                        ${user.isAdmin ? 'Admin' : 'Customer'}
+                    </span>
+                </td>
+                <td class="py-4 px-4">
+                    <button onclick="deleteUser('${user._id}')" 
+                        class="text-red-500 hover:text-red-400 ${user.isAdmin ? 'hidden' : ''}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        }
+
+        async function deleteUser(id) {
+            if (!confirm("Are you sure you want to remove this user?")) return;
+            const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) fetchUsers();
+        }
+
+        // Call this inside your DOMContentLoaded or initial load
+        fetchUsers();
+    </script>
+</body>
+
+</html>
