@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Earth's Menu | Umuzi Boho Kitchen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        boho: {
+                            50: '#F9F7F2', 100: '#EFEBE0', 200: '#E0D8C3', 300: '#D2C4A3',
+                            400: '#BFA885', 500: '#A68A64', 600: '#8C7051', 700: '#6F563E',
+                            800: '#53402E', 900: '#382B1F',
+                        },
+                        terracotta: '#CC7A50',
+                        sage: '#8FA085',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-boho-50 text-boho-800 font-sans antialiased">
+
+    <nav class="sticky top-0 z-40 bg-boho-50/90 backdrop-blur-md border-b border-boho-200">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="index.html"
+                class="font-serif text-2xl font-bold tracking-wide text-boho-900 hover:text-terracotta transition-colors">
+                UMUZI<span class="text-terracotta">.</span>
+            </a>
+            <div class="flex space-x-6 text-sm uppercase tracking-widest font-semibold text-boho-600">
+                <a href="index.html" class="hover:text-terracotta transition-colors">Home</a>
+                <a href="menu.html" class="text-boho-900 border-b-2 border-terracotta">Menu</a>
+                <a href="location.html" class="hover:text-terracotta transition-colors">Location</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-16 bg-boho-100 text-center">
+        <h1 class="font-serif text-5xl text-boho-900 mb-4 italic">The Earth's Menu</h1>
+        <p class="text-boho-600 max-w-lg mx-auto font-light">
+            Sourced from the hills of Rwanda, prepared with patience, and served with soul.
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-20">
+
+        <section class="mb-20">
+            <h2
+                class="font-serif text-3xl text-terracotta border-b border-boho-200 pb-2 mb-8 uppercase tracking-widest">
+                Morning Rituals</h2>
+            <div class="grid gap-8">
+                <div class="flex justify-between items-start group">
+                    <div>
+                        <h3
+                            class="font-serif text-xl font-bold text-boho-900 group-hover:text-terracotta transition-colors">
+                            Akagera Avocado Toast</h3>
+                        <p class="text-boho-600 text-sm">Sourdough, sun-dried tomatoes, and Rwanda-grown organic seeds.
+                        </p>
+                    </div>
+                    <span class="font-serif text-lg text-boho-700">7,500 RWF</span>
+                </div>
+                <div class="flex justify-between items-start group">
+                    <div>
+                        <h3
+                            class="font-serif text-xl font-bold text-boho-900 group-hover:text-terracotta transition-colors">
+                            Honey Ginger Mandazi</h3>
+                        <p class="text-boho-600 text-sm">Three spiced donuts served with local wild honey dip.</p>
+                    </div>
+                    <span class="font-serif text-lg text-boho-700">4,500 RWF</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2
+                class="font-serif text-3xl text-terracotta border-b border-boho-200 pb-2 mb-8 uppercase tracking-widest">
+                Main Nourishment</h2>
+            <div class="grid gap-8">
+                <div class="flex justify-between items-start group">
+                    <div>
+                        <h3
+                            class="font-serif text-xl font-bold text-boho-900 group-hover:text-terracotta transition-colors">
+                            Clay Pot Tilapia</h3>
+                        <p class="text-boho-600 text-sm">Fresh from Lake Kivu, slow-cooked with sage and seasonal roots.
+                        </p>
+                    </div>
+                    <span class="font-serif text-lg text-boho-700">12,000 RWF</span>
+                </div>
+                <div class="flex justify-between items-start group">
+                    <div>
+                        <h3
+                            class="font-serif text-xl font-bold text-boho-900 group-hover:text-terracotta transition-colors">
+                            Umuzi Veggie Bowl</h3>
+                        <p class="text-boho-600 text-sm">Roasted pumpkin, quinoa, local greens, and a tahini-chili
+                            drizzle.</p>
+                    </div>
+                    <span class="font-serif text-lg text-boho-700">9,500 RWF</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-boho-800 text-boho-50 rounded-lg p-8 md:p-12 shadow-2xl">
+            <div class="text-center mb-10">
+                <h3 class="font-serif text-3xl mb-2">The Kitchen Vibe</h3>
+                <p class="text-boho-400 font-light italic">Watch us create and listen to the rhythm of Umuzi</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div class="rounded-md overflow-hidden shadow-lg border-4 border-boho-700">
+                    <video controls class="w-full">
+                        <source src="assets/promo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <div class="flex flex-col items-center space-y-4">
+                    <p class="text-sm uppercase tracking-[0.2em] text-terracotta font-bold">Press Play for Chill Mix</p>
+                    <audio controls class="w-full opacity-80 hover:opacity-100 transition-opacity">
+                        <source src="assets/music.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <p class="text-xs text-boho-500 text-center px-4">Our playlist is curated weekly to match the sunset
+                        over Kigali.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-boho-900 text-boho-200 py-12">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-xs text-boho-500 font-light mb-4 italic">Eat well, wander often.</p>
+            <a href="http://googleusercontent.com/maps.google.com/4" target="_blank"
+                class="text-terracotta hover:text-white transition-colors text-sm uppercase tracking-widest border-b border-terracotta pb-1">
+                Find us in Kacyiru
+            </a>
+            <p class="mt-8 text-[10px] text-boho-600">© 2026 Umuzi Boho Kitchen. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umuzi Boho Kitchen | Kigali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        boho: {
+                            50: '#F9F7F2',  /* Cream/Paper */
+                            100: '#EFEBE0',
+                            200: '#E0D8C3',
+                            300: '#D2C4A3',
+                            400: '#BFA885', /* Sand */
+                            500: '#A68A64', /* Earth */
+                            600: '#8C7051',
+                            700: '#6F563E', /* Clay */
+                            800: '#53402E', /* Dark Wood */
+                            900: '#382B1F',
+                        },
+                        terracotta: '#CC7A50',
+                        sage: '#8FA085',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom understated scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #F9F7F2;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D2C4A3;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A68A64;
+        }
+    </style>
+</head>
+
+<body class="bg-boho-50 text-boho-800 font-sans antialiased selection:bg-terracotta selection:text-white">
+
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+        <div id="audio-note"
+            class="bg-white/90 backdrop-blur text-xs p-2 rounded shadow-md border border-boho-200 hidden mb-1 animate-fade-in max-w-[200px] text-right">
+            Click to play our daily chill mix. <br>Autoplay disabled for your peace.
+        </div>
+        <button onclick="toggleAudio()"
+            class="bg-terracotta hover:bg-boho-700 text-white p-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-2 group">
+            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm font-serif hidden group-hover:block whitespace-nowrap pr-1">Vibes</span>
+        </button>
+        <audio id="bg-music" loop>
+            <source src="assets/music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <nav class="sticky top-0 z-40 bg-boho-50/90 backdrop-blur-md border-b border-boho-200 transition-all duration-300">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex justify-between items-center">
+            <a href="#"
+                class="font-serif text-2xl font-bold tracking-wide text-boho-900 hover:text-terracotta transition-colors">
+                UMUZI<span class="text-terracotta">.</span>
+            </a>
+            <div class="flex space-x-6 text-sm uppercase tracking-widest font-semibold text-boho-600">
+                <a href="#" class="text-boho-900">Home</a>
+                <a href="menu.html" class="hover:text-terracotta transition-colors">Menu</a>
+                <a href="location.html" class="hover:text-terracotta transition-colors">Location</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative w-full h-[80vh] flex items-center justify-center overflow-hidden bg-boho-200">
+        <div
+            class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-boho-100 via-boho-200 to-boho-300 opacity-80">
+        </div>
+        <div
+            class="absolute top-1/2 left-1/4 w-96 h-96 bg-terracotta rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse">
+        </div>
+        <div
+            class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sage rounded-full mix-blend-multiply filter blur-3xl opacity-20">
+        </div>
+
+        <div class="relative z-10 text-center px-6 max-w-2xl">
+            <h2 class="text-terracotta uppercase tracking-[0.2em] text-sm mb-4 font-bold">Kigali, Rwanda</h2>
+            <h1 class="font-serif text-5xl md:text-7xl text-boho-900 leading-tight mb-6">
+                Taste the <span class="italic text-boho-600">Earth</span>.<br>
+                Feed your <span class="italic text-boho-600">Soul</span>.
+            </h1>
+            <p class="text-lg text-boho-700 mb-8 font-light max-w-md mx-auto">
+                A sanctuary for slow food, fresh local ingredients, and bohemian vibes in the heart of the city.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="menu.html"
+                    class="px-8 py-3 bg-boho-800 text-boho-50 hover:bg-terracotta transition-colors duration-300 rounded-sm font-serif text-lg tracking-wide shadow-lg">
+                    View Menu
+                </a>
+                <a href="#find-us"
+                    class="px-8 py-3 border border-boho-800 text-boho-800 hover:bg-boho-800 hover:text-boho-50 transition-colors duration-300 rounded-sm font-serif text-lg tracking-wide">
+                    Find Us
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-20 px-6">
+        <div class="max-w-2xl mx-auto text-center">
+            <span class="text-sage font-serif italic text-2xl mb-2 block">Our Story</span>
+            <h3 class="text-3xl font-serif text-boho-900 mb-6">Local Roots, Global Spirit</h3>
+            <p class="text-boho-600 leading-relaxed text-lg">
+                At Umuzi, we believe dining is a ritual. We source our produce directly from farmers in the Northern
+                Province, blending traditional Rwandan flavors with a laid-back bohemian aesthetic. Whether you're here
+                for a morning coffee or a sunset dinner, our space is designed to make you feel at home.
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12 bg-boho-100">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="flex flex-col items-center">
+                <h3 class="font-serif text-2xl text-boho-800 mb-6">Experience the Vibe</h3>
+                <div class="w-full shadow-2xl rounded-lg overflow-hidden border-4 border-white">
+                    <video controls class="w-full aspect-video bg-black/10 object-cover">
+                        <source src="assets/promo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="find-us" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left space-y-4">
+                <h3 class="font-serif text-4xl text-boho-900">Visit Us</h3>
+                <p class="text-boho-600">
+                    KG 543 Street, Kacyiru<br>
+                    Kigali, Rwanda
+                </p>
+                <div class="pt-4">
+                    <a href="https://www.google.com/maps/search/?api=1&query=Kacyiru+Kigali+Rwanda" target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center gap-2 text-terracotta border-b border-terracotta pb-1 hover:text-boho-900 hover:border-boho-900 transition-all">
+                        <span>Open in Google Maps</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="h-64 bg-boho-300 rounded-lg flex items-center justify-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-sage/20 group-hover:bg-sage/30 transition-colors"></div>
+                <div
+                    class="text-center p-6 border-2 border-boho-500 rounded-full w-40 h-40 flex flex-col items-center justify-center bg-white/50 backdrop-blur-sm">
+                    <span class="font-serif font-bold text-boho-900">Kigali</span>
+                    <span class="text-xs text-boho-700 mt-1">Open 7 Days</span>
+                    <span class="text-xs text-boho-700">8:00 AM - 10:00 PM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-boho-900 text-boho-200 py-12 border-t border-boho-800">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h4 class="font-serif text-2xl mb-4">UMUZI.</h4>
+            <div class="flex justify-center space-x-6 mb-8 text-sm uppercase tracking-widest text-boho-400">
+                <a href="#" class="hover:text-white transition">Instagram</a>
+                <a href="#" class="hover:text-white transition">Facebook</a>
+                <a href="#" class="hover:text-white transition">WhatsApp</a>
+            </div>
+            <p class="text-xs text-boho-500 font-light">
+                &copy; 2024 Umuzi Boho Kitchen. Made with love in Kigali.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Audio Toggle Logic
+        function toggleAudio() {
+            const audio = document.getElementById('bg-music');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const note = document.getElementById('audio-note');
+
+            if (audio.paused) {
+                audio.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                // Hide the explanation note once played
+                if (note) note.style.display = 'none';
+            } else {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
+
+        // Show audio note briefly on load then fade out
+        window.addEventListener('load', () => {
+            const note = document.getElementById('audio-note');
+            note.classList.remove('hidden');
+            setTimeout(() => {
+                note.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+                setTimeout(() => note.style.display = 'none', 1000);
+            }, 6000);
+        });
+    </script>
+</body>
+
+</html>
