@@ -1,0 +1,34 @@
+# --- secrets: never commit real env / keys ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+.jwt-secret
+*secret*
+*credential*
+
+# --- dependencies / build junk ---
+node_modules/
+dist/
+build/
+.next/
+out/
+.cache/
+vendor/
+__pycache__/
+*.log
+
+# --- os / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- documents (safety net so no personal docs sneak in) ---
+*.docx
+*.pptx
+*.xlsx
+*.pdf
+*.zip
+*.lnk
