@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRIMS - Premise License</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body { background-color: #f0f2f5; font-size: 0.9rem; }
+        .main-card { border-radius: 15px; overflow: hidden; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        
+        /* The Orange Step Indicator */
+        .step-box { 
+            background-color: #fff4e6; 
+            border: 1px solid #ffe8cc; 
+            border-radius: 50px; 
+            padding: 8px 15px; 
+        }
+        .step-circle { 
+            background: white; 
+            color: #fd7e14; 
+            width: 25px; height: 25px; 
+            border-radius: 50%; 
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center; 
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Search List style */
+        .search-results { list-style: none;
+             padding-left: 35px;
+              color: #666;
+            
+            }
+        .search-results li { 
+            padding: 5px 0;
+             cursor: pointer; }
+        .search-results li:hover { 
+            color: #0d6efd;
+         }
+
+        #map {
+             height: 600px;
+              width: 100%;
+             }
+        .btn-next { 
+            background-color: #0056b3;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+         }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-light bg-white border-bottom px-4">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
+            <div class="bg-primary rounded-circle me-2" style="width:30px; height:30px;"></div> 
+            IRIMS <span class="text-muted fw-normal ms-2" style="font-size: 0.8rem;">Customer Self Service Portal</span>
+        </a>
+        <div class="d-flex align-items-center">
+            <small class="me-3 fw-bold">MR. NIYONGABO</small>
+            <div class="bg-warning rounded-circle" style="width:35px; height:35px;"></div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid p-4">
+    <div class="card main-card">
+        <div class="row g-0">
+            
+            <div class="col-md-4 p-4 bg-white">
+                <h6 class="fw-bold mb-4">REQUEST FOR PREMISE LICENSE</h6>
+
+                <div class="step-box d-flex align-items-center mb-4">
+                    <span class="step-circle">1</span>
+                    <div>
+                        <div class="fw-bold" style="font-size: 0.8rem;">Premise Details</div>
+                        <div class="text-muted" style="font-size: 0.7rem;">License details</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-bold small">Premise Name or Site Location</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="Enter name">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-bold small">Choose country</label>
+                    <select class="form-select form-select-sm">
+                        <option>Rwanda</option>
+                    </select>
+                </div>
+
+                <div class="mb-1">
+                    <label class="form-label text-muted fw-bold small">Search for location</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0 text-muted">🔍</span>
+                        <input type="text" class="form-control border-start-0" value="Kimi">
+                    </div>
+                </div>
+
+                <ul class="search-results small mb-4">
+                    <li>Kimihurura</li>
+                    <li>Kimironko</li>
+                    <li>Kimisagara</li>
+                </ul>
+
+                <button class="btn btn-next fw-bold shadow-sm">Next</button>
+            </div>
+
+            <div class="col-md-8 position-relative">
+                <div id="map"></div>
+                
+                <div class="position-absolute top-0 end-0 p-3" style="z-index: 1000;">
+                    <div class="btn-group-vertical shadow-sm">
+                        <button class="btn btn-white bg-white border">+</button>
+                        <button class="btn btn-white bg-white border">-</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map', { zoomControl: false }).setView([-1.9441, 30.0619], 15);
+
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(map);
+
+    L.marker([-1.9441, 30.0619]).addTo(map);
+</script>
+
+</body>
+</html>
