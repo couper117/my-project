@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REG SmartPower — High-Fidelity UI Mockups</title>
+<style>
+  :root{
+    --green:#0B7A3B; --green-c:#DCF5E7; --amber:#F5B301; --amber-d:#B45309;
+    --red:#BA1A1A; --blue:#1565C0;
+    --surface:#FAFDF9; --card:#FFFFFF; --text:#171D19; --sub:#5C6560; --line:#E3EAE4;
+  }
+  .dark{
+    --green:#4CC38A; --green-c:#0F3D26; --amber:#FFC94D; --amber-d:#FBBF24;
+    --red:#FFB4AB;
+    --surface:#101511; --card:#1A211C; --text:#E1E6E0; --sub:#9AA69E; --line:#2A322C;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif}
+  body{background:#ECEFF1;padding:32px;color:#263238}
+  h1{font-size:22px;margin-bottom:4px} .meta{color:#607D8B;font-size:13px;margin-bottom:28px}
+  .row{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:40px}
+  .shot{text-align:center}
+  .shot h3{font-size:13px;font-weight:600;color:#455A64;margin-bottom:10px}
+  .phone{width:320px;height:660px;border-radius:38px;background:var(--surface);color:var(--text);
+    border:10px solid #263238;overflow:hidden;position:relative;text-align:left;
+    box-shadow:0 18px 40px rgba(0,0,0,.18);display:flex;flex-direction:column}
+  .status{display:flex;justify-content:space-between;padding:10px 20px 4px;font-size:11px;color:var(--sub)}
+  .appbar{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:14px;font-weight:600}
+  .appbar .bell{margin-left:auto;position:relative}
+  .dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--red)}
+  .body{padding:0 16px 16px;overflow:hidden;flex:1}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:12px}
+  .pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+  .pill.est{background:color-mix(in srgb,var(--amber) 18%,transparent);color:var(--amber-d)}
+  .pill.live{background:var(--green-c);color:var(--green)}
+  .hero{font-size:40px;font-weight:700;letter-spacing:-1px;color:var(--green);margin:6px 0 2px}
+  .hero.low{color:var(--amber-d)}
+  .sub{color:var(--sub);font-size:13px}
+  .qa{display:flex;justify-content:space-between;margin:14px 2px}
+  .qa div{text-align:center;font-size:11px;color:var(--sub)}
+  .qa .ic{width:52px;height:52px;border-radius:50%;background:var(--green-c);color:var(--green);
+    display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 5px}
+  .bars{display:flex;align-items:flex-end;gap:9px;height:90px;margin-top:12px}
+  .bars i{flex:1;background:var(--green-c);border-radius:6px 6px 3px 3px}
+  .bars i.hi{background:var(--green)}
+  .cap{display:flex;gap:9px;margin-top:5px}.cap span{flex:1;text-align:center;font-size:10px;color:var(--sub)}
+  .title{font-size:15px;font-weight:600;margin-bottom:4px}
+  .nav{display:flex;border-top:1px solid var(--line);background:var(--card);padding:8px 0 14px}
+  .nav div{flex:1;text-align:center;font-size:10px;color:var(--sub)}
+  .nav .on{color:var(--green);font-weight:700}
+  .nav .fab{width:48px;height:48px;border-radius:16px;background:var(--green);color:#fff;display:flex;
+    align-items:center;justify-content:center;font-size:22px;margin:-24px auto 2px;box-shadow:0 6px 14px rgba(11,122,59,.4)}
+  .chip{display:inline-block;border:1.5px solid var(--line);border-radius:99px;padding:8px 16px;font-size:13px;
+    font-weight:600;margin:0 6px 10px 0;color:var(--sub)}
+  .chip.sel{background:var(--green);border-color:var(--green);color:#fff}
+  .payrow{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--line);font-size:14px}
+  .payrow:last-child{border-bottom:none}
+  .payrow .pic{width:36px;height:36px;border-radius:10px;background:var(--green-c);color:var(--green);
+    display:flex;align-items:center;justify-content:center;font-size:16px}
+  .radio{margin-left:auto;width:18px;height:18px;border-radius:50%;border:2px solid var(--line)}
+  .radio.on{border-color:var(--green);box-shadow:inset 0 0 0 4px var(--green)}
+  .cta{display:block;background:var(--green);color:#fff;text-align:center;border-radius:14px;
+    padding:15px;font-size:15px;font-weight:600;margin-top:14px}
+  .token{font-family:ui-monospace,monospace;font-size:19px;letter-spacing:2px;text-align:center;
+    background:var(--green-c);color:var(--text);border-radius:14px;padding:16px 8px;margin:12px 0}
+  .check{width:64px;height:64px;border-radius:50%;background:var(--green-c);color:var(--green);font-size:30px;
+    display:flex;align-items:center;justify-content:center;margin:26px auto 12px}
+  .center{text-align:center}
+  .btn2{display:flex;gap:10px;margin-top:14px}
+  .btn2 a{flex:1;text-align:center;border-radius:14px;padding:12px;font-size:13px;font-weight:600}
+  .btn2 .o{border:1.5px solid var(--line);color:var(--text)} .btn2 .f{background:var(--green);color:#fff}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .kv:last-child{border:none} .kv b{font-weight:600}
+  .warn{background:color-mix(in srgb,var(--amber) 14%,transparent);border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);
+    border-radius:14px;padding:12px;font-size:12.5px;display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}
+  .seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:12px}
+  .seg span{flex:1;text-align:center;font-size:12px;padding:7px 0;border-radius:9px;color:var(--sub)}
+  .seg .on{background:var(--green);color:#fff;font-weight:600}
+  .score{display:flex;align-items:center;gap:14px}
+  .ring{width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--green) 0 78%,var(--line) 78% 100%);
+    display:flex;align-items:center;justify-content:center}
+  .ring b{width:48px;height:48px;border-radius:50%;background:var(--card);display:flex;align-items:center;
+    justify-content:center;font-size:15px}
+</style>
+</head>
+<body>
+<h1>REG SmartPower — High-Fidelity Mockups</h1>
+<p class="meta">Material 3 · REG green #0B7A3B · Inter · Light &amp; Dark · see docs/05-UIUX-Design-System.md for full spec</p>
+
+<div class="row">
+  <!-- DASHBOARD LIGHT -->
+  <div class="shot"><h3>Dashboard — Light (STS keypad · estimated)</h3>
+  <div class="phone">
+    <div class="status"><span>09:41</span><span>▲ ● ▮</span></div>
+    <div class="appbar">⚡ Home · 04123456789 ▾ <span class="bell">🔔<span class="dot"></span></span></div>
+    <div class="body">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="title">Balance</span><span class="pill est">◔ Estimated</span>
+        </div>
+        <div class="hero">23.8 kWh</div>
+        <div class="sub">≈ 5,926 RWF · about 5 days left</div>
+        <div class="sub" style="margin-top:8px;font-size:11px">Last synced 09:38 · based on your purchase history</div>
+      </div>
+      <div class="qa">
+        <div><div class="ic">⚡</div>Buy</div>
+        <div><div class="ic">🧾</div>Tokens</div>
+        <div><div class="ic">⚠️</div>Report</div>
+        <div><div class="ic">🧮</div>Simulate</div>
+      </div>
+      <div class="card">
+        <span class="title">Last 7 days</span><span class="sub" style="float:right">32.1 kWh</span>
+        <div class="bars"><i style="height:55%"></i><i style="height:70%"></i><i style="height:48%"></i><i style="height:82%"></i><i style="height:60%"></i><i style="height:74%"></i><i class="hi" style="height:64%"></i></div>
+        <div class="cap"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      </div>
+      <div class="card" style="display:flex;gap:10px;align-items:center">💡
+        <span style="font-size:12.5px">Switching off standby devices could save you ≈ 8% this month.</span>
+      </div>
+    </div>
+    <div class="nav"><div class="on">⌂<br>Home</div><div>📊<br>Usage</div><div><div class="fab">⚡</div>Buy</div><div>🔔<br>Alerts</div><div>≡<br>More</div></div>
+  </div></div>
+
+  <!-- DASHBOARD DARK -->
+  <div class="shot"><h3>Dashboard — Dark (AMI meter · live, low balance)</h3>
+  <div class="phone dark">
+    <div class="status"><span>21:12</span><span>▲ ● ▮</span></div>
+    <div class="appbar">⚡ Business · 04987654321 ▾ <span class="bell">🔔<span class="dot"></span></span></div>
+    <div class="body">
+      <div class="warn">⚠️ <span><b>Low balance.</b> Estimated to run out within 6 hours. <b style="color:var(--green)">Top up now →</b></span></div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="title">Balance</span><span class="pill live">● Live</span>
+        </div>
+        <div class="hero low">4.6 kWh</div>
+        <div class="sub">≈ 1,145 RWF · under 1 day left</div>
+      </div>
+      <div class="card">
+        <span class="title">Right now</span>
+        <div class="kv"><span>Power draw</span><b>1.43 kW</b></div>
+        <div class="kv"><span>Voltage</span><b>228 V</b></div>
+        <div class="kv"><span>Current</span><b>6.2 A</b></div>
+        <div class="kv"><span>Meter status</span><b style="color:var(--green)">● Online</b></div>
+      </div>
+      <div class="card">
+        <span class="title">Estimated appliances</span>
+        <div class="kv"><span>Iron</span><b>1000 W</b></div>
+        <div class="kv"><span>Fridge</span><b>200 W</b></div>
+        <div class="kv"><span>Lights</span><b>150 W</b></div>
+        <div class="kv"><span>TV</span><b>80 W</b></div>
+      </div>
+    </div>
+    <div class="nav"><div class="on">⌂<br>Home</div><div>📊<br>Usage</div><div><div class="fab">⚡</div>Buy</div><div>🔔<br>Alerts</div><div>≡<br>More</div></div>
+  </div></div>
+
+  <!-- BUY -->
+  <div class="shot"><h3>Buy Electricity</h3>
+  <div class="phone">
+    <div class="status"><span>09:42</span><span>▲ ● ▮</span></div>
+    <div class="appbar">← Buy Electricity</div>
+    <div class="body">
+      <p class="title" style="margin:6px 0 10px">Amount</p>
+      <div>
+        <span class="chip">2,000</span><span class="chip">5,000</span><span class="chip sel">10,000 RWF</span><span class="chip">20,000</span><span class="chip">Custom</span>
+      </div>
+      <div class="card" style="display:flex;align-items:center;gap:12px">
+        <div class="pic" style="width:40px;height:40px;border-radius:12px;background:var(--green-c);color:var(--green);display:flex;align-items:center;justify-content:center">⚡</div>
+        <div><b style="font-size:15px">≈ 40.2 kWh</b><div class="sub">at 249 RWF/kWh · Residential tariff</div></div>
+      </div>
+      <p class="title" style="margin:12px 0 6px">Pay with</p>
+      <div class="card" style="padding:6px 14px">
+        <div class="payrow"><div class="pic">📱</div>MTN MoMo ···7890<span class="radio on"></span></div>
+        <div class="payrow"><div class="pic">📲</div>Airtel Money<span class="radio"></span></div>
+        <div class="payrow"><div class="pic">💳</div>Visa ···4242<span class="radio"></span></div>
+        <div class="payrow"><div class="pic">🔳</div>Scan QR<span class="radio"></span></div>
+      </div>
+      <a class="cta">Pay 10,000 RWF</a>
+      <p class="sub center" style="margin-top:10px;font-size:11px">🔒 Secured by REG · PCI DSS compliant</p>
+    </div>
+  </div></div>
+
+  <!-- TOKEN SUCCESS -->
+  <div class="shot"><h3>Purchase Success — Token</h3>
+  <div class="phone">
+    <div class="status"><span>09:43</span><span>▲ ● ▮</span></div>
+    <div class="body center" style="padding-top:30px">
+      <div class="check">✓</div>
+      <p class="title" style="font-size:19px">Token ready</p>
+      <p class="sub">10,000 RWF · 40.2 kWh · Home meter</p>
+      <div class="token">1234 5678 9012 3456 7890</div>
+      <p class="sub" style="font-size:12px">Enter this token on your meter keypad.<br>Also sent by SMS to +250 78· ··· 456</p>
+      <div class="btn2"><a class="o">⿻ Copy</a><a class="f">↗ Share</a></div>
+      <div class="card" style="margin-top:16px;text-align:left">
+        <div class="kv"><span>Transaction ID</span><b>TX-9F3K2M</b></div>
+        <div class="kv"><span>Payment</span><b>MTN MoMo</b></div>
+        <div class="kv"><span>Receipt</span><b style="color:var(--blue)">Download PDF ↓</b></div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ANALYTICS -->
+  <div class="shot"><h3>Usage Analytics</h3>
+  <div class="phone">
+    <div class="status"><span>09:45</span><span>▲ ● ▮</span></div>
+    <div class="appbar">📊 Usage &amp; Insights</div>
+    <div class="body">
+      <div class="seg"><span>Day</span><span class="on">Week</span><span>Month</span><span>Year</span></div>
+      <div class="card">
+        <span class="title">This week</span><span class="sub" style="float:right">32.1 kWh · 7,993 RWF</span>
+        <div class="bars"><i style="height:55%"></i><i style="height:70%"></i><i style="height:48%"></i><i class="hi" style="height:88%"></i><i style="height:60%"></i><i style="height:74%"></i><i style="height:64%"></i></div>
+        <div class="cap"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+      </div>
+      <div class="card score">
+        <div class="ring"><b>78</b></div>
+        <div><span class="title">Efficiency score</span>
+        <div class="sub" style="font-size:12px">Better than 64% of similar homes in Gasabo</div></div>
+      </div>
+      <div class="card">
+        <div class="kv"><span>Peak hours</span><b>6 PM – 10 PM</b></div>
+        <div class="kv"><span>Highest day</span><b>Thursday · 5.2 kWh</b></div>
+        <div class="kv"><span>Avg. monthly cost</span><b>34,200 RWF</b></div>
+        <div class="kv"><span>Predicted depletion</span><b>Sat, 11 Jul</b></div>
+      </div>
+    </div>
+    <div class="nav"><div>⌂<br>Home</div><div class="on">📊<br>Usage</div><div><div class="fab">⚡</div>Buy</div><div>🔔<br>Alerts</div><div>≡<br>More</div></div>
+  </div></div>
+</div>
+</body>
+</html>

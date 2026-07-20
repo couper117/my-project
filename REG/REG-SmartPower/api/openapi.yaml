@@ -1,0 +1,306 @@
+openapi: 3.1.0
+info:
+  title: REG SmartPower API
+  version: 1.0.0
+  description: >
+    Companion-app API for Rwanda Energy Group Cash Power customers.
+    Integrates with existing REG vending/CIS systems; never communicates
+    directly with prepaid meters. Estimated vs metered values are flagged
+    via the `source` field.
+  contact: { name: REG SmartPower Team, email: smartpower@reg.rw }
+servers:
+  - url: https://api.smartpower.reg.rw/v1
+security: [ { bearerAuth: [] } ]
+
+paths:
+  /auth/register:
+    post:
+      security: []
+      summary: Start registration (sends OTP)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, full_name]
+              properties:
+                identifier: { type: string, description: Phone (E.164), email, or national ID }
+                full_name:  { type: string }
+      responses:
+        "202": { description: OTP sent }
+        "409": { $ref: "#/components/responses/Problem" }
+
+  /auth/otp/verify:
+    post:
+      security: []
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, code]
+              properties:
+                identifier: { type: string }
+                code: { type: string, minLength: 6, maxLength: 6 }
+      responses:
+        "200":
+          description: Tokens issued
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TokenPair" }
+        "401": { $ref: "#/components/responses/Problem" }
+
+  /auth/token/refresh:
+    post:
+      security: []
+      summary: Rotate refresh token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: { refresh_token: { type: string } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TokenPair" }
+
+  /meters:
+    get:
+      summary: List my meters
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Meter" }
+    post:
+      summary: Add meter (by number or QR payload)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meter_number: { type: string }
+                qr_payload: { type: string }
+                label: { type: string, default: Home }
+      responses:
+        "201": { description: Added, content: { application/json: { schema: { $ref: "#/components/schemas/Meter" } } } }
+        "404": { $ref: "#/components/responses/Problem" }
+
+  /meters/{meterId}/balance:
+    get:
+      summary: Current balance (estimated or metered)
+      parameters: [ { $ref: "#/components/parameters/meterId" } ]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Balance" }
+
+  /meters/{meterId}/consumption:
+    get:
+      summary: Consumption series
+      parameters:
+        - { $ref: "#/components/parameters/meterId" }
+        - { name: granularity, in: query, schema: { type: string, enum: [hour, day, week, month, year] } }
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ConsumptionPoint" }
+
+  /meters/{meterId}/prediction:
+    get:
+      summary: Depletion prediction
+      parameters: [ { $ref: "#/components/parameters/meterId" } ]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Prediction" }
+
+  /purchases:
+    post:
+      summary: Buy electricity (idempotent)
+      parameters:
+        - { name: Idempotency-Key, in: header, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [meter_id, method]
+              properties:
+                meter_id: { type: string, format: uuid }
+                amount_rwf: { type: number, minimum: 100 }
+                kwh: { type: number }
+                method: { type: string, enum: [mtn_momo, airtel_money, visa, mastercard, bank, qr] }
+                payment_method_id: { type: string, format: uuid }
+      responses:
+        "202":
+          description: Purchase accepted; poll status or listen on WebSocket
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Purchase" }
+        "402": { $ref: "#/components/responses/Problem" }
+    get:
+      summary: Purchase history
+      parameters:
+        - { name: meter_id, in: query, schema: { type: string, format: uuid } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/Purchase" } }
+                  next_cursor: { type: string, nullable: true }
+
+  /purchases/{purchaseId}:
+    get:
+      summary: Purchase status + token when completed
+      parameters:
+        - { name: purchaseId, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Purchase" }
+
+  /simulator/estimate:
+    post:
+      summary: Appliance consumption simulator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                appliances:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type: { type: string, example: fridge }
+                      watts: { type: number }
+                      hours_per_day: { type: number }
+                      qty: { type: integer, default: 1 }
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  daily_kwh: { type: number }
+                  monthly_kwh: { type: number }
+                  monthly_cost_rwf: { type: number }
+
+  /outages:
+    get:
+      summary: Active + scheduled outages (GeoJSON)
+      parameters:
+        - { name: district, in: query, schema: { type: string } }
+        - { name: bbox, in: query, schema: { type: string, example: "30.0,-2.0,30.2,-1.8" } }
+      responses:
+        "200": { description: GeoJSON FeatureCollection }
+
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  parameters:
+    meterId:
+      name: meterId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+  responses:
+    Problem:
+      description: RFC 7807 problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type: { type: string }
+              title: { type: string }
+              status: { type: integer }
+              detail: { type: string }
+  schemas:
+    TokenPair:
+      type: object
+      properties:
+        access_token: { type: string }
+        refresh_token: { type: string }
+        expires_in: { type: integer, example: 900 }
+    Meter:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        meter_number: { type: string, example: "04123456789" }
+        meter_type: { type: string, enum: [sts_keypad, sts_smart, ami] }
+        customer_name: { type: string }
+        district: { type: string }
+        sector: { type: string }
+        cell: { type: string }
+        tariff: { type: object, properties: { name: { type: string }, rwf_per_kwh: { type: number } } }
+        connection_status: { type: string, enum: [connected, disconnected, pending] }
+        role: { type: string, enum: [owner, admin, purchaser, viewer] }
+        label: { type: string }
+    Balance:
+      type: object
+      properties:
+        kwh: { type: number, example: 23.8 }
+        rwf: { type: number, example: 5926 }
+        days_remaining: { type: number, example: 5.3 }
+        source: { type: string, enum: [estimated, metered] }
+        as_of: { type: string, format: date-time }
+    ConsumptionPoint:
+      type: object
+      properties:
+        ts: { type: string, format: date-time }
+        kwh: { type: number }
+        cost_rwf: { type: number }
+        source: { type: string, enum: [estimated, metered] }
+    Prediction:
+      type: object
+      properties:
+        avg_daily_kwh: { type: number, example: 4.5 }
+        est_days_remaining: { type: number, example: 5.3 }
+        depletion_date: { type: string, format: date }
+        confidence: { type: number, example: 0.82 }
+        trend: { type: string, enum: [rising, stable, falling] }
+    Purchase:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        meter_id: { type: string, format: uuid }
+        amount_rwf: { type: number }
+        kwh: { type: number }
+        method: { type: string }
+        status: { type: string, enum: [pending, paid, vending, completed, failed, refunded] }
+        token: { type: string, nullable: true, example: "1234 5678 9012 3456 7890" }
+        receipt_url: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }
+        payment_action:
+          type: object
+          nullable: true
+          description: Next step for the client (MoMo push wait, checkout URL, or QR)
+          properties:
+            kind: { type: string, enum: [momo_push, checkout_url, qr] }
+            url: { type: string, nullable: true }

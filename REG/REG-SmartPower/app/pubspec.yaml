@@ -1,0 +1,24 @@
+name: reg_smartpower
+description: REG SmartPower - companion app for Cash Power customers (demo build with mock data).
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+# Demo build keeps dependencies minimal so `flutter run` works with zero setup.
+# Production dependencies (dio, firebase, maps, secure storage, drift, local_auth)
+# are listed in PROJECT_STRUCTURE.md and added when wiring the real backend.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  fl_chart: ^0.68.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
