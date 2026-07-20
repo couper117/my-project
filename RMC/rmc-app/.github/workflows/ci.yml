@@ -1,0 +1,132 @@
+name: CI Pipeline
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint (ESLint + Prettier)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install backend deps
+        working-directory: apps/backend
+        run: npm ci
+
+      - name: Install frontend deps
+        working-directory: apps/frontend
+        run: npm ci
+
+      - name: Lint backend
+        working-directory: apps/backend
+        run: npm run lint
+
+      - name: Lint frontend
+        working-directory: apps/frontend
+        run: npm run lint
+
+      - name: Prettier check backend
+        working-directory: apps/backend
+        run: npx prettier --check "src/**/*.ts"
+
+      - name: Prettier check frontend
+        working-directory: apps/frontend
+        run: npx prettier --check "src/**/*.{ts,tsx}"
+
+  test-backend:
+    name: Test Backend (Jest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install deps
+        working-directory: apps/backend
+        run: npm ci
+
+      - name: Run unit tests with coverage
+        working-directory: apps/backend
+        run: npm run test:cov
+        env:
+          NODE_ENV: test
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: apps/backend/coverage/
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/backend/coverage/lcov.info
+          flags: backend
+        continue-on-error: true
+
+  test-frontend:
+    name: Test Frontend (Jest/Vitest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install deps
+        working-directory: apps/frontend
+        run: npm ci
+
+      - name: Run unit tests
+        working-directory: apps/frontend
+        run: npm test -- --passWithNoTests
+        env:
+          NODE_ENV: test
+
+  security:
+    name: Security Scan (npm audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [lint, test-backend, test-frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: npm audit — backend
+        working-directory: apps/backend
+        run: npm ci && npm audit --audit-level=critical
+
+      - name: npm audit — frontend
+        working-directory: apps/frontend
+        run: npm ci && npm audit --audit-level=critical
+
+      - name: npm audit — file-server
+        working-directory: apps/file-server
+        run: npm ci && npm audit --audit-level=critical

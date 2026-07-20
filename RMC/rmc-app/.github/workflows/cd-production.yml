@@ -1,0 +1,154 @@
+name: CD — Production Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DEPLOY to confirm production deployment'
+        required: true
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    if: >
+      github.event_name == 'push' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'DEPLOY')
+    environment:
+      name: production
+      url: https://isengesho.com
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      # ── Build all apps ──────────────────────────
+      - name: Build — backend
+        working-directory: apps/backend
+        run: npm ci && npm run build
+
+      - name: Build — frontend
+        working-directory: apps/frontend
+        run: npm ci && npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://api.isengesho.com/api/v1
+          NEXT_PUBLIC_FILE_SERVER_URL: https://cdn.isengesho.com
+          NEXT_PUBLIC_ORS_API_KEY: eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImEzZGNmZTYzZjJiNDQyNDBiNGU5YzUxNGMyYTY0ZTM1IiwiaCI6Im11cm11cjY0In0=
+
+      - name: Build — file-server
+        working-directory: apps/file-server
+        run: npm ci && npm run build
+
+      # ── Setup SSH ───────────────────────────────
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRODUCTION_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+
+      # ── Patch env vars in server .env ────────────
+      - name: Set env vars on server
+        run: |
+          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.PRODUCTION_HOST }} "
+            mkdir -p /opt/rmc-platform/apps/backend
+            touch /opt/rmc-platform/apps/backend/.env
+
+            patch_env() {
+              local key=\$1 val=\$2 file=/opt/rmc-platform/apps/backend/.env
+              if grep -q \"^\${key}=\" \"\$file\"; then
+                sed -i \"s|^\${key}=.*|\${key}=\${val}|\" \"\$file\"
+              else
+                echo \"\${key}=\${val}\" >> \"\$file\"
+              fi
+            }
+
+            patch_env APP_URL https://api.isengesho.com
+            patch_env YOUTUBE_CHANNEL_ID UC8Wm3_vrV1v44QJv78YatPQ
+          "
+
+      # ── Rsync artifacts directly to EC2 ─────────
+      - name: Rsync — package manifests
+        run: |
+          rsync -az \
+            package.json \
+            package-lock.json \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/
+          rsync -az \
+            apps/backend/package.json \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/backend/
+          rsync -az \
+            apps/frontend/package.json \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/frontend/
+          rsync -az \
+            apps/file-server/package.json \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/file-server/
+
+      - name: Rsync — backend dist
+        run: |
+          rsync -az --delete \
+            apps/backend/dist/ \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/backend/dist/
+
+      - name: Rsync — frontend build
+        run: |
+          rsync -az --delete \
+            apps/frontend/.next/ \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/frontend/.next/
+          rsync -az --delete \
+            apps/frontend/public/ \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/frontend/public/
+          rsync -az \
+            apps/frontend/next.config.js \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/frontend/next.config.js
+
+      - name: Rsync — file-server dist
+        run: |
+          rsync -az --delete \
+            apps/file-server/dist/ \
+            ubuntu@${{ secrets.PRODUCTION_HOST }}:/opt/rmc-platform/apps/file-server/dist/
+
+      # ── Install prod deps, migrate, reload ──────
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ubuntu
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          script: |
+            set -e
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+
+            echo "==> Installing production dependencies..."
+            cd /opt/rmc-platform
+            npm ci --omit=dev \
+              --workspace=apps/backend \
+              --workspace=apps/frontend \
+              --workspace=apps/file-server
+
+            echo "==> Running DB migrations..."
+            cd /opt/rmc-platform
+            ./node_modules/.bin/typeorm migration:run -d apps/backend/dist/config/data-source.js
+
+            echo "==> Reloading PM2 (zero downtime)..."
+            cd /opt/rmc-platform
+            pm2 reload ecosystem.config.js --update-env
+
+            echo "==> Health checks..."
+            sleep 5
+            curl -sf http://localhost:3000/api/v1/health || (pm2 logs rmc-backend --lines 50 && exit 1)
+            curl -sf -o /dev/null -w "%{http_code}" http://localhost:3001 | grep -qE "^(200|307)" || (pm2 logs rmc-frontend --lines 50 && exit 1)
+            echo "✅ All health checks passed"
+
+            pm2 save
+            echo "✅ Deployment complete"
