@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISHIMWE KENY KELVIN — Student Software Engineer</title>
+<meta name="description" content="Portfolio of Ishimwe Keny Kelvin — student software engineer at New Generation Academy, Kigali, Rwanda.">
+<meta property="og:title" content="ISHIMWE KENY KELVIN — Student Software Engineer">
+<meta property="og:description" content="Turning concepts into robust, scalable, high-quality solutions.">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/237972652?v=4">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23ccf655'/><text x='50' y='68' font-size='52' font-family='Arial Black' font-weight='900' text-anchor='middle' fill='%230f120d'>K</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/theme.js"></script>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- preloader -->
+<div id="preloader">
+  <div class="pl-top"><span>Portfolio — 2026</span><span>Kigali, Rwanda</span></div>
+  <div>
+    <div class="pl-count">0</div>
+    <div class="pl-name"><span id="pl-name-text">Load Kelvin</span></div>
+    <div class="pl-bar"><i></i></div>
+  </div>
+</div>
+
+<!-- nav -->
+<header class="nav">
+  <a href="#hero" class="logo" id="nav-logo">IKK</a>
+  <nav class="nav-links">
+    <a href="#hero">Home</a><a href="#gallery">Gallery</a><a href="#projects">Projects</a><a href="#timeline">Career</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+  </nav>
+  <div class="nav-right">
+    <button id="theme-toggle" aria-label="Switch light/dark mode" title="Light / dark mode">◐</button>
+    <button class="burger" id="burger" aria-label="Open menu">Menu</button>
+  </div>
+</header>
+
+<!-- fullscreen menu -->
+<div id="menu">
+  <button class="menu-close" id="menu-close">Close ✕</button>
+  <a href="#hero">Home</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#projects">Projects</a>
+  <a href="#timeline">Career</a>
+  <a href="#skills">Skills</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-next">
+      <span id="hero-next-label">Currently</span>
+      <span class="nr" id="hero-next-value">Student @ NGA</span>
+    </div>
+    <div class="hero-inner">
+      <div>
+        <h1 class="hero-title" id="hero-title"></h1>
+        <div class="hero-sub">
+          <h2 id="hero-role"></h2>
+          <span class="hero-meta" id="hero-meta"></span>
+          <a id="hero-cv" class="hero-cv hidden" href="#" target="_blank" rel="noopener">Download CV ↓</a>
+        </div>
+      </div>
+      <div class="hero-photo" id="hero-photo">
+        <img id="hero-img" src="" alt="Portrait of Kelvin">
+        <span class="hero-badge" id="hero-badge"></span>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll to drive ↓</div>
+  </section>
+
+  <div class="marquee"><div class="m-track" id="marquee-track"></div></div>
+
+  <!-- MESSAGE -->
+  <section class="message" id="message">
+    <div class="label"><span id="quote1-label"></span></div>
+    <p class="big" id="quote1-text"></p>
+    <span class="sig" id="signature"></span>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="g-head"><h3><span id="gallery-t1"></span> <em id="gallery-t2"></em></h3></div>
+    <div class="g-wrap"><div class="g-track" id="g-track"></div></div>
+  </section>
+
+  <!-- QUOTE 2 -->
+  <section class="message" id="quote2">
+    <div class="label"><span id="quote2-label"></span></div>
+    <p class="big" id="quote2-text"></p>
+  </section>
+
+  <!-- SPLIT -->
+  <section id="split">
+    <a class="split-cell" href="#projects">
+      <div>
+        <h3><span id="split-a1"></span><span class="hollow" id="split-a2"></span></h3>
+        <p id="split-adesc"></p>
+      </div>
+      <span class="cell-link">/projects →</span>
+    </a>
+    <a class="split-cell" href="#socials">
+      <div>
+        <h3><span id="split-b1"></span><span class="hollow" id="split-b2"></span></h3>
+        <p id="split-bdesc"></p>
+      </div>
+      <span class="cell-link">/contact →</span>
+    </a>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="p-head">
+      <h3><span id="projects-t1"></span> <em id="projects-t2"></em></h3>
+      <p id="projects-desc"></p>
+    </div>
+    <div class="p-grid" id="p-grid"></div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <h3><span id="timeline-t1"></span> <em id="timeline-t2"></em></h3>
+    <div class="tl-list" id="tl-list"></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="s-head"><h3><span id="skills-t1"></span> <em id="skills-t2"></em></h3></div>
+    <div class="s-marquee"><div class="s-track" id="s-track-1"></div></div>
+    <div class="s-marquee rev"><div class="s-track" id="s-track-2"></div></div>
+  </section>
+
+  <!-- SOCIALS -->
+  <section id="socials">
+    <h3><span id="socials-t1"></span> <em id="socials-t2"></em></h3>
+    <div class="soc-list" id="soc-list"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h3><span id="contact-t1"></span> <em id="contact-t2"></em></h3>
+    <p class="c-desc" id="contact-desc"></p>
+    <form id="contact-form" novalidate>
+      <div class="c-grid">
+        <label>Your name<input name="name" maxlength="100" required></label>
+        <label>Your email<input name="email" type="email" maxlength="200" required></label>
+      </div>
+      <label>Message<textarea name="message" maxlength="5000" required></textarea></label>
+      <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit" class="c-send">Send message →</button>
+      <p class="c-status" id="contact-status" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div class="f-big" id="footer-big"></div>
+  <div class="f-mid">
+    <a id="footer-mail" href="#"></a>
+    <span id="footer-tagline"></span>
+  </div>
+  <div class="f-bottom">
+    <span id="footer-copyright"></span>
+    <span><span id="footer-credit"></span> · <a href="/admin" class="admin-link">Admin</a></span>
+  </div>
+</footer>
+
+<!-- admin bar (only visible when logged in) -->
+<div id="admin-bar" class="hidden">
+  <span class="ab-hi">Hi, <b id="ab-user"></b></span>
+  <button id="ab-edit" class="ab-btn primary">✎ Edit page</button>
+  <button id="ab-save" class="ab-btn primary hidden">✓ Save</button>
+  <button id="ab-cancel" class="ab-btn hidden">Cancel</button>
+  <a href="/admin" class="ab-btn">Dashboard</a>
+  <button id="ab-logout" class="ab-btn">Log out</button>
+</div>
+<div id="edit-hint" class="hidden">Edit mode — click text to change it · click images to replace · ✕ removes · + adds</div>
+<input type="file" id="edit-file" accept="image/*" hidden>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="/js/site.js"></script>
+</body>
+</html>

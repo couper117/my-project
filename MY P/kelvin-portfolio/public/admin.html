@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Kelvin Portfolio</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23ccf655'/><text x='50' y='68' font-size='52' font-family='Arial Black' font-weight='900' text-anchor='middle' fill='%230f120d'>A</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-view" class="hidden">
+  <form id="login-form" class="login-card">
+    <a href="/" class="back-link">← Back to portfolio</a>
+    <h1>IKK <span>Admin</span></h1>
+    <p class="sub">Sign in to manage your portfolio</p>
+    <label>Username<input name="username" autocomplete="username" required></label>
+    <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit" class="btn primary">Log in →</button>
+    <p id="login-error" class="error"></p>
+    <p class="visitor-note">Not the admin? No problem — <a href="/">go back to the site</a>.</p>
+  </form>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash-view" class="hidden">
+  <aside class="side">
+    <div class="side-top">
+      <h1>IKK <span>Admin</span></h1>
+      <nav id="tabs"></nav>
+    </div>
+    <div class="side-bottom">
+      <a href="/" target="_blank" class="btn ghost">View site ↗</a>
+      <button id="logout-btn" class="btn ghost">Log out</button>
+    </div>
+  </aside>
+  <main class="panel">
+    <div id="panel-content"></div>
+  </main>
+</div>
+
+<div id="toast"></div>
+<input type="file" id="file-input" accept="image/*,.pdf" hidden>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISHIMWE KENY KELVIN — Student Software Engineer</title>
+<meta name="description" content="Official portfolio of Ishimwe Keny Kelvin — student software engineer at New Generation Academy, Kigali, Rwanda.">
+<meta property="og:title" content="ISHIMWE KENY KELVIN — Student Software Engineer">
+<meta property="og:description" content="Portfolio of Ishimwe Keny Kelvin — turning concepts into robust, scalable, high-quality solutions.">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/237972652?v=4">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23ccf655'/><text x='50' y='68' font-size='52' font-family='Arial Black' font-weight='900' text-anchor='middle' fill='%230f120d'>K</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lime:#ccf655;
+  --ink:#0f120d;
+  --ink-2:#161a13;
+  --cream:#f1efe4;
+  --grey:#8b8f83;
+  --display:'Anton',Impact,sans-serif;
+  --body:'Space Grotesk',Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html.editing{scroll-behavior:auto}
+body{background:var(--ink);color:var(--cream);font-family:var(--body);overflow-x:hidden;cursor:none}
+body.no-custom-cursor{cursor:auto}
+::selection{background:var(--lime);color:var(--ink)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--body);cursor:pointer}
+
+/* ---------- custom cursor ---------- */
+#cursor{position:fixed;top:0;left:0;width:14px;height:14px;border-radius:50%;background:var(--lime);pointer-events:none;z-index:10000;mix-blend-mode:difference;transition:width .25s,height .25s}
+#cursor.hovering{width:52px;height:52px}
+body.no-custom-cursor #cursor{display:none}
+
+/* ---------- preloader ---------- */
+#preloader{position:fixed;inset:0;background:var(--ink);z-index:9000;display:flex;flex-direction:column;justify-content:space-between;padding:5vh 5vw}
+#preloader .pl-top{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--grey)}
+#preloader .pl-count{font-family:var(--display);font-size:clamp(90px,20vw,260px);line-height:.9;color:var(--lime)}
+#preloader .pl-name{overflow:hidden}
+#preloader .pl-name span{display:inline-block;font-family:var(--display);font-size:clamp(24px,4vw,54px);text-transform:uppercase;letter-spacing:.02em;transform:translateY(110%)}
+#preloader .pl-bar{height:2px;background:#2a2e26;margin-top:24px}
+#preloader .pl-bar i{display:block;height:100%;width:0;background:var(--lime)}
+
+/* ---------- nav ---------- */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:22px 4vw;mix-blend-mode:difference}
+.nav .logo{font-family:var(--display);font-size:26px;color:var(--lime);letter-spacing:.05em}
+.nav .nav-links{display:flex;gap:34px;font-size:13px;text-transform:uppercase;letter-spacing:.2em}
+.nav .nav-links a{position:relative;padding:4px 0}
+.nav .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--lime);transition:width .3s}
+.nav .nav-links a:hover::after{width:100%}
+.nav .burger{display:none;background:none;border:none;color:var(--cream);font-size:12px;letter-spacing:.25em;text-transform:uppercase}
+@media(max-width:820px){.nav .nav-links{display:none}.nav .burger{display:block}}
+
+/* ---------- menu overlay ---------- */
+#menu{position:fixed;inset:0;background:var(--lime);color:var(--ink);z-index:850;transform:translateY(-101%);transition:transform .6s cubic-bezier(.77,0,.18,1);display:flex;flex-direction:column;justify-content:center;padding:0 8vw}
+#menu.open{transform:translateY(0)}
+#menu a{font-family:var(--display);font-size:clamp(40px,9vw,110px);line-height:1.02;text-transform:uppercase;border-bottom:1px solid rgba(15,18,13,.15)}
+#menu a:hover{padding-left:16px;transition:padding .3s}
+#menu .menu-close{position:absolute;top:26px;right:5vw;background:none;border:none;font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink)}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;white-space:nowrap;border-top:1px solid #262b22;border-bottom:1px solid #262b22;padding:14px 0;background:var(--ink)}
+.marquee .m-track{display:inline-block;animation:marquee 22s linear infinite}
+.marquee span{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);margin:0 26px}
+.marquee span b{color:var(--lime);font-weight:600}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- hero ---------- */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;padding:0 4vw 0}
+.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:end;gap:3vw;padding-bottom:4vh}
+.hero-title{font-family:var(--display);text-transform:uppercase;line-height:.92;font-size:clamp(56px,11.5vw,190px);letter-spacing:.005em}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line>span{display:inline-block;transform:translateY(112%)}
+.hero-sub{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px 40px;align-items:center}
+.hero-sub h2{font-family:var(--body);font-weight:400;font-size:clamp(14px,1.6vw,20px);text-transform:uppercase;letter-spacing:.28em;color:var(--lime)}
+.hero-sub .hero-meta{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+.hero-photo{position:relative;width:clamp(200px,24vw,360px);aspect-ratio:3/3.6;overflow:hidden;border-radius:2px}
+.hero-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%);transform:scale(1.25)}
+.hero-photo::after{content:"";position:absolute;inset:0;border:1px solid rgba(204,246,85,.35);pointer-events:none}
+.hero-badge{position:absolute;left:-1px;bottom:-1px;background:var(--lime);color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:8px 14px}
+.hero-next{position:absolute;top:16vh;right:4vw;text-align:right;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--grey)}
+.hero-next .nr{display:block;font-family:var(--display);font-size:clamp(22px,3vw,40px);color:var(--cream);letter-spacing:.04em;margin-top:6px}
+.hero-scroll{position:absolute;bottom:4vh;right:4vw;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);writing-mode:vertical-rl}
+@media(max-width:820px){.hero-inner{grid-template-columns:1fr}.hero-photo{width:62vw;margin-top:20px}.hero-next{position:static;text-align:left;margin:14vh 0 0}}
+
+/* ---------- message / quote ---------- */
+.message{padding:18vh 8vw;max-width:1200px}
+.message .label{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);margin-bottom:34px;display:flex;align-items:center;gap:16px}
+.message .label::after{content:"";flex:1;height:1px;background:#262b22}
+.message p.big{font-size:clamp(26px,4.2vw,58px);line-height:1.15;font-weight:500;letter-spacing:-.01em}
+.message p.big .w{opacity:.14;display:inline-block}
+.message p.big b,.message p.big strong{color:var(--lime);font-weight:600}
+.message .sig{margin-top:40px;font-family:var(--display);color:var(--lime);font-size:clamp(22px,3vw,36px);letter-spacing:.06em;transform:rotate(-3deg);display:inline-block}
+
+/* ---------- horizontal gallery ---------- */
+#gallery{position:relative;overflow:hidden}
+#gallery .g-head{padding:0 4vw 5vh;display:flex;justify-content:space-between;align-items:end}
+#gallery .g-head h3{font-family:var(--display);font-size:clamp(34px,6vw,90px);text-transform:uppercase;line-height:.95}
+#gallery .g-head h3 em{-webkit-text-stroke:1.5px var(--lime);color:transparent;font-style:normal}
+.g-track{display:flex;gap:4vw;padding:0 4vw;width:max-content;align-items:center}
+.g-item{position:relative;flex:0 0 auto;width:clamp(240px,30vw,460px)}
+.g-item .g-cap{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);margin-bottom:12px}
+.g-item .g-cap b{color:var(--lime);font-weight:600}
+.g-item .g-img{overflow:hidden;aspect-ratio:4/5;border-radius:2px}
+.g-item img{width:100%;height:100%;object-fit:cover;transform:scale(1.15);transition:filter .4s}
+.g-item:hover img{filter:grayscale(0)!important}
+.g-item .g-num{position:absolute;bottom:-14px;right:-6px;font-family:var(--display);font-size:clamp(40px,5vw,80px);color:transparent;-webkit-text-stroke:1px rgba(204,246,85,.5);line-height:1}
+html.editing .g-wrap{overflow-x:auto;padding-bottom:30px}
+html.editing .g-track{width:max-content}
+
+/* ---------- split banners (ON TRACK style) ---------- */
+#split{display:grid;grid-template-columns:1fr 1fr;min-height:78vh;border-top:1px solid #262b22;border-bottom:1px solid #262b22}
+.split-cell{position:relative;padding:8vh 4vw;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.split-cell+.split-cell{border-left:1px solid #262b22}
+.split-cell h3{font-family:var(--display);font-size:clamp(48px,7.5vw,120px);text-transform:uppercase;line-height:.92}
+.split-cell h3 span{display:block}
+.split-cell h3 .hollow{-webkit-text-stroke:1.5px var(--cream);color:transparent}
+.split-cell p{max-width:36ch;color:var(--grey);font-size:15px;line-height:1.6;margin-top:26px}
+.split-cell p b,.split-cell p strong{color:var(--cream)}
+.split-cell .cell-link{margin-top:34px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime)}
+.split-cell:hover{background:var(--ink-2)}
+.split-cell:hover h3 .hollow{-webkit-text-stroke-color:var(--lime)}
+@media(max-width:820px){#split{grid-template-columns:1fr}.split-cell+.split-cell{border-left:none;border-top:1px solid #262b22}}
+
+/* ---------- projects (helmets hall of fame style) ---------- */
+#projects{padding:16vh 4vw}
+#projects .p-head{margin-bottom:8vh}
+#projects .p-head h3{font-family:var(--display);font-size:clamp(40px,7vw,110px);text-transform:uppercase;line-height:.95}
+#projects .p-head h3 em{font-style:normal;-webkit-text-stroke:1.5px var(--lime);color:transparent}
+#projects .p-head p{color:var(--grey);max-width:52ch;margin-top:22px;line-height:1.6}
+.p-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:34px 26px}
+.p-card{position:relative;display:block;border:1px solid #262b22;border-radius:2px;overflow:hidden;background:var(--ink-2);transition:border-color .35s,transform .35s}
+.p-card:hover{border-color:var(--lime);transform:translateY(-6px)}
+.p-card .p-img{aspect-ratio:16/10;overflow:hidden;position:relative;background:#1b2016}
+.p-card .p-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(70%);transition:filter .45s,transform .6s}
+.p-card:hover .p-img img{filter:grayscale(0);transform:scale(1.06)}
+.p-card .p-img .p-mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:64px;color:rgba(204,246,85,.25);transition:color .4s}
+.p-card:hover .p-mono{color:var(--lime)}
+.p-card .p-body{padding:20px 22px 24px;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.p-card .p-body h4{font-family:var(--display);font-size:22px;text-transform:uppercase;letter-spacing:.03em;line-height:1.1}
+.p-card .p-body .p-year{font-size:11px;letter-spacing:.22em;color:var(--grey);text-transform:uppercase;white-space:nowrap}
+.p-card .p-desc{padding:0 22px 22px;color:var(--grey);font-size:14px;line-height:1.55}
+.p-card .p-tag{position:absolute;top:14px;left:14px;background:var(--lime);color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:5px 10px;border-radius:1px}
+
+/* ---------- skills strip ---------- */
+#skills{padding:14vh 0;border-top:1px solid #262b22}
+#skills .s-head{padding:0 4vw;display:flex;justify-content:space-between;align-items:end;margin-bottom:7vh}
+#skills h3{font-family:var(--display);font-size:clamp(36px,6vw,90px);text-transform:uppercase;line-height:.95}
+#skills h3 em{font-style:normal;-webkit-text-stroke:1.5px var(--lime);color:transparent}
+.s-marquee{overflow:hidden;white-space:nowrap;padding:10px 0;border-top:1px solid #262b22;border-bottom:1px solid #262b22}
+.s-marquee .s-track{display:inline-block;animation:marquee 26s linear infinite}
+.s-marquee.rev .s-track{animation-direction:reverse}
+.s-item{display:inline-flex;align-items:center;gap:22px;margin:0 30px;font-family:var(--display);font-size:clamp(30px,4.4vw,64px);text-transform:uppercase;color:var(--cream)}
+.s-item::after{content:"✦";color:var(--lime);font-size:.5em}
+.s-item:hover{color:var(--lime)}
+
+/* ---------- socials ---------- */
+#socials{padding:16vh 4vw;border-top:1px solid #262b22}
+#socials h3{font-family:var(--display);font-size:clamp(36px,6vw,90px);text-transform:uppercase;line-height:.95;margin-bottom:7vh}
+#socials h3 em{font-style:normal;-webkit-text-stroke:1.5px var(--lime);color:transparent}
+.soc-list{border-top:1px solid #262b22}
+.soc-row{position:relative;display:flex;justify-content:space-between;align-items:center;padding:30px 6px;border-bottom:1px solid #262b22;font-family:var(--display);font-size:clamp(26px,4.5vw,64px);text-transform:uppercase;transition:padding .3s,color .3s}
+.soc-row:hover{padding-left:26px;color:var(--lime)}
+.soc-row .soc-handle{font-family:var(--body);font-size:13px;letter-spacing:.22em;color:var(--grey);text-transform:none}
+.soc-row .arrow{font-size:.6em;color:var(--lime)}
+
+/* ---------- footer ---------- */
+footer{position:relative;padding:16vh 4vw 5vh;background:var(--lime);color:var(--ink)}
+footer .f-big{font-family:var(--display);font-size:clamp(44px,10vw,160px);line-height:.92;text-transform:uppercase}
+footer .f-mid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:26px;margin-top:8vh;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+footer .f-mid a{border-bottom:1px solid rgba(15,18,13,.4);padding-bottom:2px}
+footer .f-mid a:hover{border-color:var(--ink)}
+footer .f-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;margin-top:9vh;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,18,13,.65)}
+
+/* ---------- edit mode ---------- */
+#edit-fab{position:fixed;right:22px;bottom:22px;z-index:950;background:var(--lime);color:var(--ink);border:none;border-radius:100px;padding:14px 22px;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+#edit-bar{position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);z-index:940;display:flex;gap:8px;background:#1c2117;border:1px solid #333a2c;border-radius:14px;padding:10px;transition:transform .35s;flex-wrap:wrap;justify-content:center;max-width:94vw}
+#edit-bar.show{transform:translate(-50%,0)}
+#edit-bar button{background:#262c1f;color:var(--cream);border:1px solid #333a2c;border-radius:8px;padding:9px 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+#edit-bar button:hover{border-color:var(--lime);color:var(--lime)}
+#edit-bar button.primary{background:var(--lime);color:var(--ink);border-color:var(--lime);font-weight:700}
+#edit-bar button.danger:hover{border-color:#ff6b57;color:#ff6b57}
+html.editing [data-bind]{outline:1px dashed rgba(204,246,85,.55);outline-offset:3px;min-width:20px}
+html.editing [data-bind]:focus{outline:2px solid var(--lime);background:rgba(204,246,85,.06)}
+html.editing .g-item img,html.editing .hero-photo img,html.editing .p-img img{cursor:pointer}
+.rm-btn,.add-btn{display:none}
+html.editing .rm-btn{display:flex;position:absolute;top:8px;right:8px;z-index:5;width:26px;height:26px;align-items:center;justify-content:center;background:#ff6b57;color:#fff;border:none;border-radius:50%;font-size:13px;line-height:1}
+html.editing .add-btn{display:inline-block;margin:26px auto 0;background:transparent;border:1px dashed var(--lime);color:var(--lime);border-radius:100px;padding:11px 24px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+html.editing .add-wrap{text-align:center}
+html.editing .soc-row .rm-btn{top:50%;transform:translateY(-50%)}
+html.editing .s-marquee .s-track{animation-play-state:paused}
+html.editing .s-item{position:relative;padding-right:34px}
+html.editing .marquee .m-track{animation-play-state:paused}
+html.editing .hero-title .line>span{transform:none!important}
+html.editing .message p.big{opacity:1}
+html.editing .message p.big .w{opacity:1}
+#img-input{display:none}
+.edit-hint{position:fixed;top:74px;left:50%;transform:translateX(-50%);z-index:940;background:#1c2117;border:1px solid #333a2c;color:var(--grey);font-size:11px;letter-spacing:.1em;padding:9px 18px;border-radius:100px;display:none;text-transform:uppercase;white-space:nowrap}
+html.editing .edit-hint{display:block}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- preloader -->
+<div id="preloader">
+  <div class="pl-top"><span>Portfolio — 2026</span><span>Kigali, Rwanda</span></div>
+  <div>
+    <div class="pl-count">0</div>
+    <div class="pl-name"><span id="pl-name-text">Load Kelvin</span></div>
+    <div class="pl-bar"><i></i></div>
+  </div>
+</div>
+
+<!-- nav -->
+<header class="nav">
+  <a href="#hero" class="logo" data-bind="profile.logo">IKK</a>
+  <nav class="nav-links">
+    <a href="#hero">Home</a><a href="#gallery">Gallery</a><a href="#projects">Projects</a><a href="#skills">Skills</a><a href="#socials">Contact</a>
+  </nav>
+  <button class="burger" onclick="document.getElementById('menu').classList.add('open')">Menu</button>
+</header>
+
+<!-- fullscreen menu (mobile) -->
+<div id="menu">
+  <button class="menu-close" onclick="document.getElementById('menu').classList.remove('open')">Close ✕</button>
+  <a href="#hero" onclick="closeMenu()">Home</a>
+  <a href="#gallery" onclick="closeMenu()">Gallery</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#socials" onclick="closeMenu()">Contact</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-next">
+      <span data-bind="profile.nextLabel">Currently</span>
+      <span class="nr" data-bind="profile.nextValue">Student @ NGA</span>
+    </div>
+    <div class="hero-inner">
+      <div>
+        <h1 class="hero-title" id="hero-title"></h1>
+        <div class="hero-sub">
+          <h2 data-bind="profile.role">Student Software Engineer</h2>
+          <span class="hero-meta" data-bind="profile.meta">New Generation Academy — Kigali, Rwanda — Age 17</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img id="hero-img" src="" alt="Portrait of Kelvin">
+        <span class="hero-badge" data-bind="profile.badge">EST. 2009</span>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll to drive ↓</div>
+  </section>
+
+  <div class="marquee"><div class="m-track" id="marquee-track"></div></div>
+
+  <!-- MESSAGE -->
+  <section class="message" id="message">
+    <div class="label"><span data-bind="quote1.label">Message from Kelvin</span></div>
+    <p class="big" id="quote1-text"></p>
+    <span class="sig" data-bind="profile.signature">— Keny Kelvin</span>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="g-head">
+      <h3><span data-bind="gallery.title1">The</span> <em data-bind="gallery.title2">Journey</em></h3>
+    </div>
+    <div class="g-wrap"><div class="g-track" id="g-track"></div></div>
+    <div class="add-wrap"><button class="add-btn" onclick="addGalleryItem()">+ Add Photo</button></div>
+  </section>
+
+  <!-- QUOTE 2 -->
+  <section class="message" id="quote2">
+    <div class="label"><span data-bind="quote2.label">Philosophy</span></div>
+    <p class="big" id="quote2-text"></p>
+  </section>
+
+  <!-- SPLIT -->
+  <section id="split">
+    <a class="split-cell" href="#projects">
+      <div>
+        <h3><span data-bind="split.a1">ON</span><span class="hollow" data-bind="split.a2">CODE</span></h3>
+        <p data-bind="split.aDesc">Most recent <b>projects</b>, systems and experiments — from school platforms to full web apps.</p>
+      </div>
+      <span class="cell-link">/projects →</span>
+    </a>
+    <a class="split-cell" href="#socials">
+      <div>
+        <h3><span data-bind="split.b1">OFF</span><span class="hollow" data-bind="split.b2">CODE</span></h3>
+        <p data-bind="split.bDesc"><b>Student life</b>, football, gaming and everything that keeps the creativity running.</p>
+      </div>
+      <span class="cell-link">/contact →</span>
+    </a>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="p-head">
+      <h3><span data-bind="projects.title1">Projects</span> <em data-bind="projects.title2">Hall of Fame</em></h3>
+      <p data-bind="projects.desc">From school management systems to sports platforms — I've always been passionate about building solutions that solve real problems, from idea to deployed product.</p>
+    </div>
+    <div class="p-grid" id="p-grid"></div>
+    <div class="add-wrap"><button class="add-btn" onclick="addProject()">+ Add Project</button></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="s-head">
+      <h3><span data-bind="skills.title1">Tech</span> <em data-bind="skills.title2">&amp; Stack</em></h3>
+    </div>
+    <div class="s-marquee"><div class="s-track" id="s-track-1"></div></div>
+    <div class="s-marquee rev"><div class="s-track" id="s-track-2"></div></div>
+    <div class="add-wrap"><button class="add-btn" onclick="addSkill()">+ Add Skill</button></div>
+  </section>
+
+  <!-- SOCIALS -->
+  <section id="socials">
+    <h3><span data-bind="socials.title1">What's up</span> <em data-bind="socials.title2">On Socials</em></h3>
+    <div class="soc-list" id="soc-list"></div>
+    <div class="add-wrap"><button class="add-btn" onclick="addSocial()">+ Add Link</button></div>
+  </section>
+</main>
+
+<footer>
+  <div class="f-big" data-bind="footer.big">Always building the future.</div>
+  <div class="f-mid">
+    <a id="footer-mail" href="#" data-bind="footer.email">ikennykelvin75@gmail.com</a>
+    <span data-bind="footer.tagline">Open for internships &amp; collabs</span>
+  </div>
+  <div class="f-bottom">
+    <span data-bind="footer.copyright">© 2026 Ishimwe Keny Kelvin. All rights reserved.</span>
+    <span data-bind="footer.credit">Designed with inspiration — built with code</span>
+  </div>
+</footer>
+
+<!-- edit UI -->
+<div class="edit-hint">Edit mode — click any text to change it · click any image to replace it · ✕ removes · + adds</div>
+<button id="edit-fab" onclick="toggleEdit()">✎ Edit Site</button>
+<div id="edit-bar">
+  <button class="primary" onclick="saveEdits()">✓ Save</button>
+  <button onclick="cancelEdits()">Cancel</button>
+  <button onclick="exportData()">Export JSON</button>
+  <button onclick="document.getElementById('json-input').click()">Import JSON</button>
+  <button class="danger" onclick="resetData()">Reset to default</button>
+</div>
+<input type="file" id="img-input" accept="image/*">
+<input type="file" id="json-input" accept="application/json" style="display:none">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+/* =====================================================
+   DATA MODEL — everything on the page lives here.
+   Edits are saved to localStorage and can be
+   exported / imported as JSON.
+===================================================== */
+const STORAGE_KEY = 'ikk_portfolio_v1';
+
+const DEFAULT_DATA = {
+  profile: {
+    logo: 'IKK',
+    nameLines: ['Ishimwe', 'Keny Kelvin'],
+    role: 'Student Software Engineer',
+    meta: 'New Generation Academy — Kigali, Rwanda — Age 17',
+    badge: 'EST. 2009',
+    nextLabel: 'Currently',
+    nextValue: 'Student @ NGA',
+    signature: '— Keny Kelvin',
+    photo: 'https://avatars.githubusercontent.com/u/237972652?v=4'
+  },
+  marquee: ['New Generation Academy', 'Software Engineer', 'Kigali · Rwanda', 'Problem → Solution', 'Since 2009'],
+  quote1: {
+    label: 'Message from Kelvin',
+    text: '**Turning** concepts into robust, scalable and **high-quality** solutions. Using the best possible practice from **idea** to deployed solution.'
+  },
+  gallery: {
+    title1: 'The', title2: 'Journey',
+    items: [
+      { img: 'https://avatars.githubusercontent.com/u/237972652?v=4', place: 'Kigali', year: '2026' },
+      { img: 'https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baa04b14a1ca33c0b25_ln-home-horiz-1.webp', place: 'Replace me', year: '2025' },
+      { img: 'https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baab12220595c8223b3_ln-home-horiz-2.webp', place: 'Replace me', year: '2025' },
+      { img: 'https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baa798e2cc6e02ac38a_ln-home-horiz-4.webp', place: 'Replace me', year: '2024' },
+      { img: 'https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baa14a96f3cdd2f9a95_ln-home-horiz-6.webp', place: 'Replace me', year: '2024' },
+      { img: 'https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baaedf821dd2e3a7c74_ln-home-horiz-8.webp', place: 'Replace me', year: '2024' }
+    ]
+  },
+  quote2: {
+    label: 'Philosophy',
+    text: "It doesn't matter **where you start**, it's how you **progress** from there. Every codebase is a puzzle waiting to be **solved**."
+  },
+  split: {
+    a1: 'ON', a2: 'CODE', aDesc: "Most recent **projects**, systems and experiments — from school platforms to full web apps.",
+    b1: 'OFF', b2: 'CODE', bDesc: "**Student life**, football, gaming and everything that keeps the creativity running."
+  },
+  projects: {
+    title1: 'Projects', title2: 'Hall of Fame',
+    desc: "From school management systems to sports platforms — I've always been passionate about building solutions that solve real problems, from idea to deployed product.",
+    items: [
+      { title: 'Interschool Sports Website', year: '2025', tag: 'PHP', desc: 'A full platform connecting schools through sports — fixtures, results and team management.', link: 'https://github.com/couper117/interschool-sports-website', img: '' },
+      { title: 'Student Management System', year: '2025', tag: 'JavaScript', desc: 'Manage students, records and reports in one clean dashboard.', link: 'https://github.com/couper117/Student-management-system', img: '' },
+      { title: 'My Portfolio', year: '2026', tag: 'CSS', desc: 'This very site — designed, animated and made fully editable.', link: 'https://github.com/couper117/MY-PORTFOLIO', img: '' },
+      { title: 'Project 2025', year: '2025', tag: 'PHP', desc: 'A capstone-style project focused on real-world problem solving.', link: 'https://github.com/couper117/project2025', img: '' },
+      { title: 'My NMP', year: '2025', tag: 'JavaScript', desc: 'A Node-powered experiment exploring modern backend patterns.', link: 'https://github.com/couper117/my-nmp', img: '' },
+      { title: 'RRA Version 3', year: '2025', tag: 'Web', desc: 'Third iteration of the RRA build — cleaner, faster, better.', link: 'https://github.com/couper117/RRA-version-3', img: '' }
+    ]
+  },
+  skills: {
+    title1: 'Tech', title2: '& Stack',
+    items: ['Python', 'JavaScript', 'PHP', 'C', 'SQL', 'Node.js', 'HTML5', 'CSS3']
+  },
+  socials: {
+    title1: "What's up", title2: 'On Socials',
+    items: [
+      { name: 'GitHub', handle: '@couper117', url: 'https://github.com/couper117' },
+      { name: 'Instagram', handle: '@kel_vin_75', url: 'https://www.instagram.com/kel_vin_75/' },
+      { name: 'LinkedIn', handle: '/in/kennykelvin', url: 'https://linkedin.com/in/kennykelvin' },
+      { name: 'Email', handle: 'ikennykelvin75@gmail.com', url: 'mailto:ikennykelvin75@gmail.com' }
+    ]
+  },
+  footer: {
+    big: 'Always building the future.',
+    email: 'ikennykelvin75@gmail.com',
+    tagline: 'Open for internships & collabs',
+    copyright: '© 2026 Ishimwe Keny Kelvin. All rights reserved.',
+    credit: 'Designed with inspiration — built with code'
+  }
+};
+
+let DATA = loadData();
+let editing = false;
+let backup = null;
+
+function loadData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){ console.warn('storage unavailable', e); }
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function persist(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }
+  catch(e){ console.warn('could not persist', e); }
+}
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* render **bold** as lime <b> */
+const rich = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+
+/* =====================================================
+   RENDER
+===================================================== */
+function renderAll(){
+  // simple binds — while editing show raw text (with ** markers), otherwise render rich
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const v = getPath(DATA, el.dataset.bind);
+    if(v === undefined) return;
+    if(editing) el.textContent = v; else el.innerHTML = rich(v);
+  });
+  document.getElementById('footer-mail').href = 'mailto:' + DATA.footer.email;
+
+  // hero title lines
+  document.getElementById('hero-title').innerHTML = DATA.profile.nameLines
+    .map((l,i) => `<span class="line" data-bind="profile.nameLines.${i}"><span>${esc(l)}</span></span>`).join('');
+  document.getElementById('hero-img').src = DATA.profile.photo;
+
+  // marquee (duplicate for seamless loop)
+  const mItems = DATA.marquee.map((m,i)=>`<span data-bind="marquee.${i}"><b>✦</b> ${esc(m)}</span>`).join('');
+  document.getElementById('marquee-track').innerHTML = mItems + mItems;
+
+  // quotes (word-split for scroll reveal)
+  renderQuote('quote1-text', DATA.quote1.text, 'quote1.text');
+  renderQuote('quote2-text', DATA.quote2.text, 'quote2.text');
+
+  // gallery
+  document.getElementById('g-track').innerHTML = DATA.gallery.items.map((g,i)=>`
+    <figure class="g-item">
+      <button class="rm-btn" onclick="removeItem('gallery',${i})" title="Remove">✕</button>
+      <figcaption class="g-cap">
+        <span data-bind="gallery.items.${i}.place">${esc(g.place)}</span>
+        <b data-bind="gallery.items.${i}.year">${esc(g.year)}</b>
+      </figcaption>
+      <div class="g-img"><img src="${esc(g.img)}" alt="${esc(g.place)}" data-imgpath="gallery.items.${i}.img" loading="lazy"></div>
+      <span class="g-num">${String(i+1).padStart(2,'0')}</span>
+    </figure>`).join('');
+
+  // projects
+  document.getElementById('p-grid').innerHTML = DATA.projects.items.map((p,i)=>`
+    <a class="p-card" href="${esc(p.link)}" target="_blank" rel="noopener" ${editing?'onclick="return false"':''}>
+      <button class="rm-btn" onclick="event.preventDefault();removeItem('projects',${i})" title="Remove">✕</button>
+      <span class="p-tag" data-bind="projects.items.${i}.tag">${esc(p.tag)}</span>
+      <div class="p-img">
+        ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.title)}" data-imgpath="projects.items.${i}.img" loading="lazy">`
+                : `<div class="p-mono" data-imgpath="projects.items.${i}.img">${esc((p.title||'P').slice(0,1))}${String(i+1).padStart(2,'0')}</div>`}
+      </div>
+      <div class="p-body">
+        <h4 data-bind="projects.items.${i}.title">${esc(p.title)}</h4>
+        <span class="p-year" data-bind="projects.items.${i}.year">${esc(p.year)}</span>
+      </div>
+      <p class="p-desc" data-bind="projects.items.${i}.desc">${esc(p.desc)}</p>
+    </a>`).join('');
+
+  // skills marquees
+  const sHtml = DATA.skills.items.map((s,i)=>`<span class="s-item"><span data-bind="skills.items.${i}">${esc(s)}</span><button class="rm-btn" onclick="removeItem('skills',${i})" title="Remove">✕</button></span>`).join('');
+  document.getElementById('s-track-1').innerHTML = sHtml + sHtml;
+  document.getElementById('s-track-2').innerHTML = sHtml + sHtml;
+
+  // socials
+  document.getElementById('soc-list').innerHTML = DATA.socials.items.map((s,i)=>`
+    <a class="soc-row" href="${esc(s.url)}" target="_blank" rel="noopener" ${editing?'onclick="return false"':''}>
+      <button class="rm-btn" onclick="event.preventDefault();removeItem('socials',${i})" title="Remove">✕</button>
+      <span data-bind="socials.items.${i}.name">${esc(s.name)}</span>
+      <span class="soc-handle" data-bind="socials.items.${i}.handle">${esc(s.handle)}</span>
+      <span class="arrow">↗</span>
+    </a>`).join('');
+
+  // re-apply binds text (arrays rendered after first pass)
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const v = getPath(DATA, el.dataset.bind);
+    if(v === undefined || el.children.length !== 0) return;
+    if(editing) el.textContent = v; else el.innerHTML = rich(v);
+  });
+
+  if(editing) enableEditing();
+}
+
+function renderQuote(id, text, path){
+  const el = document.getElementById(id);
+  el.dataset.quotepath = path;
+  if(editing){ el.dataset.bind = path; el.textContent = text; return; }
+  // words with **bold** support, each word wrapped for reveal
+  const html = text.split(/\s+/).map(w=>{
+    const b = /^\*\*.*\*\*[.,!?]?$/.test(w);
+    const clean = esc(w.replace(/\*\*/g,''));
+    return `<span class="w">${b?`<b>${clean}</b>`:clean}</span>`;
+  }).join(' ');
+  el.innerHTML = html;
+}
+
+function getPath(obj, path){
+  return path.split('.').reduce((o,k)=> (o==null?undefined:o[k]), obj);
+}
+function setPath(obj, path, val){
+  const keys = path.split('.');
+  const last = keys.pop();
+  const target = keys.reduce((o,k)=>o[k], obj);
+  target[last] = val;
+}
+
+/* =====================================================
+   ANIMATIONS  (Lando-style: preloader counter, line
+   reveals, pinned horizontal gallery, word-scrub quotes)
+===================================================== */
+gsap.registerPlugin(ScrollTrigger);
+
+function runPreloader(){
+  const count = document.querySelector('.pl-count');
+  const bar = document.querySelector('.pl-bar i');
+  const nameSpan = document.getElementById('pl-name-text');
+  const state = { v: 0 };
+  const tl = gsap.timeline({ onComplete: heroIn });
+  tl.to(nameSpan, { y: 0, duration: .7, ease: 'power3.out' })
+    .to(state, { v: 100, duration: 1.6, ease: 'power2.inOut',
+      onUpdate: () => { count.textContent = Math.round(state.v); bar.style.width = state.v + '%'; } }, '<')
+    .to('#preloader', { yPercent: -100, duration: .8, ease: 'power4.inOut', delay: .15 });
+}
+
+function heroIn(){
+  gsap.to('#hero-title .line > span', { y: 0, duration: 1, ease: 'power4.out', stagger: .12 });
+  gsap.fromTo('#hero-img', { scale: 1.25, filter: 'grayscale(80%)' }, { scale: 1, filter: 'grayscale(20%)', duration: 1.4, ease: 'power3.out', delay: .2 });
+  gsap.fromTo('.hero-sub, .hero-next, .hero-scroll, .hero-badge', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .8, stagger: .08, delay: .5 });
+}
+
+function initScrollAnimations(){
+  ScrollTrigger.getAll().forEach(t => t.kill());
+  if(editing) return; // keep everything static & scrollable while editing
+
+  // pinned horizontal gallery
+  const track = document.getElementById('g-track');
+  const wrap = document.querySelector('.g-wrap');
+  const dist = () => track.scrollWidth - window.innerWidth;
+  if(dist() > 0){
+    gsap.to(track, {
+      x: () => -dist(),
+      ease: 'none',
+      scrollTrigger: { trigger: '#gallery', start: 'top top', end: () => '+=' + dist(), scrub: 1, pin: true, invalidateOnRefresh: true }
+    });
+    // parallax inside each image
+    document.querySelectorAll('.g-item img').forEach(img => {
+      gsap.fromTo(img, { xPercent: -6 }, { xPercent: 6, ease: 'none',
+        scrollTrigger: { trigger: '#gallery', start: 'top top', end: () => '+=' + dist(), scrub: 1 } });
+    });
+  }
+
+  // quote word reveals
+  ['quote1-text','quote2-text'].forEach(id => {
+    const words = document.querySelectorAll('#' + id + ' .w');
+    if(!words.length) return;
+    gsap.to(words, { opacity: 1, stagger: .06, ease: 'none',
+      scrollTrigger: { trigger: '#' + id, start: 'top 78%', end: 'bottom 45%', scrub: true } });
+  });
+
+  // section headers slide in
+  document.querySelectorAll('.g-head h3, .p-head h3, #skills h3, #socials h3, .split-cell h3').forEach(h => {
+    gsap.fromTo(h, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: h, start: 'top 88%' } });
+  });
+
+  // cards pop in
+  gsap.utils.toArray('.p-card').forEach((c,i) => {
+    gsap.fromTo(c, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: .8, ease: 'power3.out', delay: (i%3)*.08,
+      scrollTrigger: { trigger: c, start: 'top 92%' } });
+  });
+
+  // social rows
+  gsap.utils.toArray('.soc-row').forEach((r,i) => {
+    gsap.fromTo(r, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: .7, delay: i*.05, ease: 'power3.out',
+      scrollTrigger: { trigger: r, start: 'top 94%' } });
+  });
+
+  // footer big text
+  gsap.fromTo('footer .f-big', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: 'footer', start: 'top 80%' } });
+
+  // gallery images grayscale scrub
+  document.querySelectorAll('.g-item img').forEach(img => {
+    img.style.filter = 'grayscale(85%)';
+    ScrollTrigger.create({ trigger: img, start: 'left 80%', horizontal: false,
+      onEnter: () => gsap.to(img, { filter: 'grayscale(0%)', duration: .8 }) });
+  });
+
+  ScrollTrigger.refresh();
+}
+
+/* custom cursor */
+(function cursor(){
+  const c = document.getElementById('cursor');
+  if(matchMedia('(pointer:coarse)').matches){ document.body.classList.add('no-custom-cursor'); return; }
+  let x=innerWidth/2, y=innerHeight/2, tx=x, ty=y;
+  addEventListener('mousemove', e => { tx=e.clientX; ty=e.clientY; });
+  (function loop(){ x+=(tx-x)*.18; y+=(ty-y)*.18; c.style.transform=`translate(${x-7}px,${y-7}px)`; requestAnimationFrame(loop); })();
+  document.addEventListener('mouseover', e => {
+    c.classList.toggle('hovering', !!e.target.closest('a,button,.p-card,.soc-row'));
+  });
+})();
+
+function closeMenu(){ document.getElementById('menu').classList.remove('open'); }
+
+/* =====================================================
+   EDIT MODE — toggle, contentEditable, add/remove,
+   image swap, save/cancel, export/import/reset
+===================================================== */
+function toggleEdit(){
+  if(editing){ saveEdits(); return; }
+  editing = true;
+  backup = JSON.stringify(DATA);
+  document.documentElement.classList.add('editing');
+  document.getElementById('edit-fab').textContent = '✓ Done';
+  document.getElementById('edit-bar').classList.add('show');
+  ScrollTrigger.getAll().forEach(t => t.kill());
+  // flatten quotes back to editable plain text, normalize all binds to raw text
+  document.querySelectorAll('[data-quotepath]').forEach(el => { el.dataset.bind = el.dataset.quotepath; });
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const v = getPath(DATA, el.dataset.bind);
+    if(v !== undefined) el.textContent = v;
+  });
+  gsap.set('#hero-title .line > span', { y: 0 });
+  gsap.set('.hero-sub,.hero-next,.hero-scroll,.hero-badge,.p-card,.soc-row,footer .f-big,.g-head h3,.p-head h3,#skills h3,#socials h3,.split-cell h3', { clearProps: 'all', opacity: 1 });
+  document.querySelectorAll('.g-item img').forEach(i => i.style.filter = 'none');
+  gsap.set('#g-track', { x: 0 });
+  enableEditing();
+}
+
+function enableEditing(){
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+  });
+  // image swapping
+  document.querySelectorAll('[data-imgpath]').forEach(el => {
+    el.onclick = e => { e.preventDefault(); e.stopPropagation(); changeImage(el.dataset.imgpath); };
+  });
+  const heroImg = document.getElementById('hero-img');
+  heroImg.onclick = () => changeImage('profile.photo');
+}
+
+let pendingImgPath = null;
+function changeImage(path){
+  pendingImgPath = path;
+  const url = prompt('Paste an image URL — or press OK with the box empty to upload a file from your computer:', '');
+  if(url === null) return;
+  if(url.trim()){
+    setPath(DATA, path, url.trim());
+    renderAll();
+  } else {
+    document.getElementById('img-input').click();
+  }
+}
+document.getElementById('img-input').addEventListener('change', function(){
+  const f = this.files[0]; this.value = '';
+  if(!f || !pendingImgPath) return;
+  const r = new FileReader();
+  r.onload = () => { setPath(DATA, pendingImgPath, r.result); renderAll(); };
+  r.readAsDataURL(f);
+});
+
+function collectEdits(){
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    setPath(DATA, el.dataset.bind, el.innerText.trim());
+  });
+}
+
+function saveEdits(){
+  collectEdits();
+  persist();
+  exitEditMode();
+}
+function cancelEdits(){
+  DATA = JSON.parse(backup);
+  exitEditMode();
+}
+function exitEditMode(){
+  editing = false;
+  document.documentElement.classList.remove('editing');
+  document.getElementById('edit-fab').textContent = '✎ Edit Site';
+  document.getElementById('edit-bar').classList.remove('show');
+  document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'false');
+  renderAll();
+  requestAnimationFrame(() => { gsap.set('#hero-title .line > span', { y: 0 }); initScrollAnimations(); });
+}
+
+/* add / remove */
+function removeItem(section, i){
+  if(!confirm('Remove this item?')) return;
+  collectEdits();
+  DATA[section].items.splice(i, 1);
+  renderAll();
+}
+function addGalleryItem(){
+  collectEdits();
+  DATA.gallery.items.push({ img: 'https://avatars.githubusercontent.com/u/237972652?v=4', place: 'New place', year: '2026' });
+  renderAll();
+}
+function addProject(){
+  collectEdits();
+  DATA.projects.items.push({ title: 'New Project', year: '2026', tag: 'Web', desc: 'Describe your project here.', link: 'https://github.com/couper117', img: '' });
+  renderAll();
+}
+function addSkill(){
+  collectEdits();
+  DATA.skills.items.push('New Skill');
+  renderAll();
+}
+function addSocial(){
+  collectEdits();
+  const url = prompt('Link URL (e.g. https://tiktok.com/@you):', 'https://');
+  if(!url) return;
+  DATA.socials.items.push({ name: 'New Link', handle: '@handle', url });
+  renderAll();
+}
+
+/* export / import / reset */
+function exportData(){
+  collectEdits();
+  const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'kelvin-portfolio-content.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+document.getElementById('json-input').addEventListener('change', function(){
+  const f = this.files[0]; this.value = '';
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{ DATA = JSON.parse(r.result); persist(); renderAll(); alert('Content imported ✓'); }
+    catch(e){ alert('That file is not valid JSON.'); }
+  };
+  r.readAsText(f);
+});
+function resetData(){
+  if(!confirm('Reset ALL content to the original defaults? Your saved changes will be lost.')) return;
+  DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  persist();
+  renderAll();
+}
+
+/* =====================================================
+   BOOT
+===================================================== */
+renderAll();
+runPreloader();
+window.addEventListener('load', initScrollAnimations);
+if(document.readyState === 'complete') initScrollAnimations();
+window.addEventListener('resize', () => { if(!editing) ScrollTrigger.refresh(); });
+</script>
+</body>
+</html>
