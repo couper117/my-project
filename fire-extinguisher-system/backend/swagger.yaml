@@ -1,0 +1,369 @@
+openapi: 3.0.0
+info:
+  title: Fire Extinguisher Management System API
+  description: |
+    RESTful API for TZW LTD Fire Extinguisher Management System.
+    Manage extinguishers, schedule inspections, log maintenance, and generate reports.
+  version: 1.0.0
+  contact:
+    name: TZW LTD Dev Team
+
+servers:
+  - url: http://localhost:5001/api
+    description: Development server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        first_name: { type: string }
+        last_name: { type: string }
+        email: { type: string, format: email }
+        role:
+          type: string
+          enum: [Admin, Inspector, User]
+
+    Extinguisher:
+      type: object
+      required: [serial_number, type, size, location, installation_date, expiry_date]
+      properties:
+        id: { type: integer }
+        serial_number: { type: string, example: "EXT-001" }
+        type:
+          type: string
+          enum: [Water, CO2, Foam, Dry Chemical]
+        size:
+          type: string
+          enum: ["2.5 lbs", "5 lbs", "9 lbs", "12 lbs"]
+        location: { type: string }
+        installation_date: { type: string, format: date }
+        expiry_date: { type: string, format: date }
+        status:
+          type: string
+          enum: [Active, Expired, Under Maintenance, Decommissioned]
+
+    Inspection:
+      type: object
+      properties:
+        id: { type: integer }
+        extinguisher_id: { type: integer }
+        inspector_id: { type: integer }
+        inspection_date: { type: string, format: date-time }
+        status:
+          type: string
+          enum: [Pass, Fail, Pending]
+        notes: { type: string }
+
+    Maintenance:
+      type: object
+      properties:
+        id: { type: integer }
+        extinguisher_id: { type: integer }
+        inspector_id: { type: integer }
+        maintenance_date: { type: string, format: date-time }
+        action_taken: { type: string }
+        notes: { type: string }
+        next_maintenance_date: { type: string, format: date }
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [first_name, last_name, email, password]
+              properties:
+                first_name: { type: string }
+                last_name: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 6 }
+                role: { type: string, enum: [Admin, Inspector, User] }
+      responses:
+        '201': { description: User registered successfully }
+        '409': { description: Email already exists }
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Login and receive JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: Login successful, returns JWT token }
+        '401': { description: Invalid credentials }
+
+  /auth/profile:
+    get:
+      tags: [Auth]
+      summary: Get current user profile
+      responses:
+        '200': { description: User profile }
+    put:
+      tags: [Auth]
+      summary: Update profile
+      responses:
+        '200': { description: Profile updated }
+
+  /auth/change-password:
+    put:
+      tags: [Auth]
+      summary: Change password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                current_password: { type: string }
+                new_password: { type: string }
+      responses:
+        '200': { description: Password changed }
+
+  /auth/forgot-password:
+    post:
+      tags: [Auth]
+      security: []
+      summary: Recover password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+      responses:
+        '200': { description: Temp password issued }
+
+  /extinguishers:
+    get:
+      tags: [Extinguishers]
+      summary: List all extinguishers (paginated)
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 10 }
+        - in: query
+          name: status
+          schema: { type: string, enum: [Active, Expired, Under Maintenance, Decommissioned] }
+        - in: query
+          name: type
+          schema: { type: string }
+      responses:
+        '200': { description: List of extinguishers }
+    post:
+      tags: [Extinguishers]
+      summary: Create extinguisher (Admin/Inspector)
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Extinguisher' }
+      responses:
+        '201': { description: Created }
+
+  /extinguishers/{id}:
+    get:
+      tags: [Extinguishers]
+      summary: Get extinguisher by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Extinguisher details }
+        '404': { description: Not found }
+    put:
+      tags: [Extinguishers]
+      summary: Update extinguisher (Admin/Inspector)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Extinguishers]
+      summary: Delete extinguisher (Admin only)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Deleted }
+
+  /inspections:
+    get:
+      tags: [Inspections]
+      summary: List all inspections
+      responses:
+        '200': { description: List }
+    post:
+      tags: [Inspections]
+      summary: Log inspection result (Inspector/Admin)
+      responses:
+        '201': { description: Logged }
+
+  /inspections/schedule:
+    post:
+      tags: [Inspections]
+      summary: Schedule an inspection
+      responses:
+        '201': { description: Scheduled }
+
+  /inspections/{id}:
+    get:
+      tags: [Inspections]
+      summary: Get inspection by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Inspection }
+
+  /maintenance:
+    get:
+      tags: [Maintenance]
+      summary: List maintenance records
+      responses:
+        '200': { description: List }
+    post:
+      tags: [Maintenance]
+      summary: Log maintenance activity (Inspector/Admin)
+      responses:
+        '201': { description: Logged }
+
+  /maintenance/{id}:
+    get:
+      tags: [Maintenance]
+      summary: Get maintenance record by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Record }
+
+  /reports/summary:
+    get:
+      tags: [Reports]
+      summary: Dashboard summary statistics
+      responses:
+        '200': { description: Summary stats }
+
+  /reports/stock:
+    get:
+      tags: [Reports]
+      summary: Extinguisher stock by type/status
+      responses:
+        '200': { description: Stock data }
+
+  /reports/daily:
+    get:
+      tags: [Reports]
+      summary: Daily report
+      parameters:
+        - in: query
+          name: date
+          schema: { type: string, format: date }
+      responses:
+        '200': { description: Daily report }
+
+  /reports/monthly:
+    get:
+      tags: [Reports]
+      summary: Monthly report
+      parameters:
+        - in: query
+          name: year
+          schema: { type: integer }
+        - in: query
+          name: month
+          schema: { type: integer }
+      responses:
+        '200': { description: Monthly report }
+
+  /reports/yearly:
+    get:
+      tags: [Reports]
+      summary: Yearly report
+      parameters:
+        - in: query
+          name: year
+          schema: { type: integer }
+      responses:
+        '200': { description: Yearly report }
+
+  /reports/export:
+    get:
+      tags: [Reports]
+      summary: Export extinguishers as CSV (Admin)
+      responses:
+        '200':
+          description: CSV file
+          content:
+            text/csv: {}
+
+  /users:
+    get:
+      tags: [Users]
+      summary: List all users (Admin)
+      responses:
+        '200': { description: User list }
+
+  /users/{id}/role:
+    put:
+      tags: [Users]
+      summary: Update user role (Admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Role updated }
+
+  /users/{id}:
+    delete:
+      tags: [Users]
+      summary: Delete user (Admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Deleted }
