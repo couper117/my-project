@@ -1,0 +1,64 @@
+/* src/index.css */
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Step 9.3: Grid Layout */
+.product-list-grid {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+  /* 2 columns on mobile */
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .product-list-grid {
+    /* 4 columns on desktop */
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.product-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+}
+
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.product-card button {
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.product-card button:active {
+  transform: scale(0.95); /* Slight "squish" when clicked */
+}
+
+.product-card button:disabled {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
